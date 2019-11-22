@@ -39,13 +39,13 @@ declare namespace Taro {
    * 获取用户过去三十天微信运动步数，需要先调用 [Taro.login](https://developers.weixin.qq.com/miniprogram/dev/api/open-api/login/wx.login.html) 接口。
    * 需要[用户授权](https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/authorize.html) scope.werun
    * @example
-   ```tsx
-   Taro.getWeRunData({
-       success(res) {
-           const encryptedData = res.encryptedData
-       }
-   })
-   ```
+   * ```tsx
+   * Taro.getWeRunData({
+   *     success(res) {
+   *         const encryptedData = res.encryptedData
+   *     }
+   * })
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/open-api/werun/wx.getWeRunData.html
    */
   function getWeRunData(res?: getWeRunData.Param): Promise<getWeRunData.Promised>

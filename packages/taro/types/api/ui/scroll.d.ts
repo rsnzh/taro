@@ -17,6 +17,7 @@ declare namespace Taro {
   }
   /**
    * 将页面滚动到目标位置。
+   * @supported weapp, h5
    * @example
    * ```tsx
    * Taro.pageScrollTo({

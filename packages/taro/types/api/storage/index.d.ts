@@ -1,13 +1,13 @@
 declare namespace Taro {
   /**
    * 将 data 存储在本地缓存中指定的 key 中，会覆盖掉原来该 key 对应的内容，这是一个同步接口。
+   * @supported weapp, h5
    * @example
-   ```tsx
-   try {
-       Taro.setStorageSync('key', 'value')
-   } catch (e) {
-   }
-   ```
+   * ```tsx
+   * try {
+   *     Taro.setStorageSync('key', 'value')
+   * } catch (e) {}
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.setStorageSync.html
    */
   function setStorageSync(key: string, data: any | string): void
@@ -26,27 +26,29 @@ declare namespace Taro {
   }
   /**
    * 将数据存储在本地缓存中指定的 key 中，会覆盖掉原来该 key 对应的内容，这是一个异步接口。
+   * @supported weapp, h5, rn
    * @example
-   ```tsx
-   Taro.setStorage({
-     key:"key",
-     data:"value"
-   })
-   ```
+   * ```tsx
+   * Taro.setStorage({
+   *   key:"key",
+   *   data:"value"
+   * })
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.setStorage.html
    */
   function setStorage(res: setStorage.Param): Promise<any>
 
   /**
    * 从本地缓存中同步移除指定 key 。
+   * @supported weapp, h5
    * @example
-   ```tsx
-   try {
-     Taro.removeStorageSync('key')
-   } catch (e) {
-     // Do something when catch error
-   }
-   ```
+   * ```tsx
+   * try {
+   *   Taro.removeStorageSync('key')
+   * } catch (e) {
+   *   // Do something when catch error
+   * }
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.removeStorageSync.html
    */
   function removeStorageSync(key: string): void
@@ -61,32 +63,34 @@ declare namespace Taro {
   }
   /**
    * 从本地缓存中异步移除指定 key 。
+   * @supported weapp, h5, rn
    * @example
-   ```tsx
-   Taro.removeStorage({
-     key: 'key',
-     success: function(res) {
-       console.log(res.data)
-     }
-   })
-   ```
+   * ```tsx
+   * Taro.removeStorage({
+   *   key: 'key',
+   *   success: function(res) {
+   *     console.log(res.data)
+   *   }
+   * })
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.removeStorage.html
    */
   function removeStorage(res: removeStorage.Param): Promise<any>
 
   /**
    * 从本地缓存中同步获取指定 key 对应的内容。
+   * @supported weapp, h5
    * @example
-   ```tsx
-   try {
-     var value = Taro.getStorageSync('key')
-     if (value) {
-         // Do something with return value
-     }
-   } catch (e) {
-     // Do something when catch error
-   }
-   ```
+   * ```tsx
+   * try {
+   *   var value = Taro.getStorageSync('key')
+   *   if (value) {
+   *       // Do something with return value
+   *   }
+   * } catch (e) {
+   *   // Do something when catch error
+   * }
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.getStorageSync.html
    */
   function getStorageSync(key: string): any | undefined
@@ -109,17 +113,18 @@ declare namespace Taro {
   }
   /**
    * 同步获取当前storage的相关信息
+   * @supported weapp, h5
    * @example
-   ```tsx
-   try {
-     var res = Taro.getStorageInfoSync()
-     console.log(res.keys)
-     console.log(res.currentSize)
-     console.log(res.limitSize)
-   } catch (e) {
-     // Do something when catch error
-   }
-   ```
+   * ```tsx
+   * try {
+   *   var res = Taro.getStorageInfoSync()
+   *   console.log(res.keys)
+   *   console.log(res.currentSize)
+   *   console.log(res.limitSize)
+   * } catch (e) {
+   *   // Do something when catch error
+   * }
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.getStorageInfoSync.html
    */
   function getStorageInfoSync(): getStorageInfoSync.Return
@@ -143,16 +148,17 @@ declare namespace Taro {
   }
   /**
    * 异步获取当前storage的相关信息
+   * @supported weapp, h5, rn
    * @example
-   ```tsx
-   Taro.getStorageInfo({
-     success: function(res) {
-       console.log(res.keys)
-       console.log(res.currentSize)
-       console.log(res.limitSize)
-     }
-   })
-   ```
+   * ```tsx
+   * Taro.getStorageInfo({
+   *   success: function(res) {
+   *     console.log(res.keys)
+   *     console.log(res.currentSize)
+   *     console.log(res.limitSize)
+   *   }
+   * })
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.getStorageInfo.html
    */
   function getStorageInfo(res?: getStorageInfo.Param): Promise<getStorageInfo.Promised>
@@ -173,15 +179,16 @@ declare namespace Taro {
   }
   /**
    * 从本地缓存中异步获取指定 key 对应的内容。
+   * @supported weapp, h5, rn
    * @example
-   ```tsx
-   Taro.getStorage({
-     key: 'key',
-     success: function(res) {
-         console.log(res.data)
-     }
-   })
-   ```
+   * ```tsx
+   * Taro.getStorage({
+   *   key: 'key',
+   *   success: function(res) {
+   *       console.log(res.data)
+   *   }
+   * })
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.getStorage.html
    */
   function getStorage(res: getStorage.Param): Promise<getStorage.Promised>
@@ -192,24 +199,26 @@ declare namespace Taro {
    * **Bug & Tip：**
    *
    * 1.  `tip`: 本地数据存储的大小限制为 10MB
+   * @supported weapp, h5
    * @example
-   ```tsx
-   try {
-       Taro.clearStorageSync()
-   } catch(e) {
-     // Do something when catch error
-   }
-   ```
+   * ```tsx
+   * try {
+   *     Taro.clearStorageSync()
+   * } catch(e) {
+   *   // Do something when catch error
+   * }
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.clearStorageSync.html
    */
   function clearStorageSync(): void
 
   /**
    * 清理本地数据缓存。
+   * @supported weapp, h5, rn
    * @example
-   ```tsx
-   Taro.clearStorage()
-   ```
+   * ```tsx
+   * Taro.clearStorage()
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.clearStorage.html
    */
   function clearStorage(): void

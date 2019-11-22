@@ -42,6 +42,7 @@ declare namespace Taro {
    * **注意: `export` 方法每次调用后会清掉之前的动画操作**
    *
    * **timingFunction 有效值：**
+   * @supported weapp, h5
    * @example
    * ```tsx
    * var animation = Taro.createAnimation({

@@ -24,30 +24,25 @@ declare namespace Taro {
   }
   /**
    * 跳转到 tabBar 页面，并关闭其他所有非 tabBar 页面
-   *
-   * **示例代码：**
-   *
-   ```json
-   {
-     "tabBar": {
-       "list": [{
-         "pagePath": "index",
-         "text": "首页"
-       },{
-         "pagePath": "other",
-         "text": "其他"
-       }]
-     }
-   }
-   ```
-   *
-   * **示例代码：**
-   *
-   ```tsx
-   Taro.switchTab({
-     url: '/index'
-   })
-   ```
+   * @example
+   * ```json
+   * {
+   *   "tabBar": {
+   *     "list": [{
+   *       "pagePath": "index",
+   *       "text": "首页"
+   *     },{
+   *       "pagePath": "other",
+   *       "text": "其他"
+   *     }]
+   *   }
+   * }
+   * ```
+   * ```tsx
+   * Taro.switchTab({
+   *   url: '/index'
+   * })
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.switchTab.html
    */
   function switchTab(res: switchTab.Param): Promise<any>
@@ -77,25 +72,20 @@ declare namespace Taro {
   }
   /**
    * 关闭所有页面，打开到应用内的某个页面。
-   *
-   * **示例代码：**
-   *
-   ```tsx
-   Taro.reLaunch({
-     url: 'test?id=1'
-   })
-   ```
-   *
-   * **示例代码：**
-   *
-   ```tsx
-   //test.js
-   Page({
-     onLoad: function(option){
-       console.log(option.query)
-     }
-   })
-   ```
+   * @example
+   * ```tsx
+   * Taro.reLaunch({
+   *   url: 'test?id=1'
+   * })
+   * ```
+   * ```tsx
+   * //test.js
+   * Page({
+   *   onLoad: function(option){
+   *     console.log(option.query)
+   *   }
+   * })
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.reLaunch.html
    */
   function reLaunch(res: reLaunch.Param): Promise<any>
@@ -126,11 +116,11 @@ declare namespace Taro {
   /**
    * 关闭当前页面，跳转到应用内的某个页面。
    * @example
-   ```tsx
-   Taro.redirectTo({
-     url: 'test?id=1'
-   })
-   ```
+   * ```tsx
+   * Taro.redirectTo({
+   *   url: 'test?id=1'
+   * })
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.redirectTo.html
    */
   function redirectTo(res: redirectTo.Param): Promise<any>
@@ -160,25 +150,20 @@ declare namespace Taro {
   }
   /**
    * 保留当前页面，跳转到应用内的某个页面，使用`Taro.navigateBack`可以返回到原页面。
-   *
-   * **示例代码：**
-   *
-   ```tsx
-   Taro.navigateTo({
-     url: 'test?id=1'
-   })
-   ```
-   *
-   * **示例代码：**
-   *
-   ```tsx
-   //test.js
-   Page({
-     onLoad: function(option){
-       console.log(option.query)
-     }
-   })
-   ```
+   * @example
+   * ```tsx
+   * Taro.navigateTo({
+   *   url: 'test?id=1'
+   * })
+   * ```
+   * ```tsx
+   * //test.js
+   * Page({
+   *   onLoad: function(option){
+   *     console.log(option.query)
+   *   }
+   * })
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.navigateTo.html
    */
   function navigateTo(res: navigateTo.Param): Promise<any>
@@ -213,22 +198,23 @@ declare namespace Taro {
    * **Tip：**
    *
    * 1.  `tip`: Taro.navigateTo 和 Taro.redirectTo 不允许跳转到 tabbar 页面，只能用 Taro.switchTab 跳转到 tabbar 页面
+   * @supported weapp
    * @example
-   ```tsx
-   // 注意：调用 navigateTo 跳转时，调用该方法的页面会被加入堆栈，而 redirectTo 方法则不会。见下方示例代码
-         // 此处是A页面
-   Taro.navigateTo({
-     url: 'B?id=1'
-   })
-         // 此处是B页面
-   Taro.navigateTo({
-     url: 'C?id=1'
-   })
-         // 在C页面内 navigateBack，将返回A页面
-   Taro.navigateBack({
-     delta: 2
-   })
-   ```
+   * ```tsx
+   * // 注意：调用 navigateTo 跳转时，调用该方法的页面会被加入堆栈，而 redirectTo 方法则不会。见下方示例代码
+   *       // 此处是A页面
+   * Taro.navigateTo({
+   *   url: 'B?id=1'
+   * })
+   *       // 此处是B页面
+   * Taro.navigateTo({
+   *   url: 'C?id=1'
+   * })
+   *       // 在C页面内 navigateBack，将返回A页面
+   * Taro.navigateBack({
+   *   delta: 2
+   * })
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.navigateBack.html
    */
   function navigateBack(res?: navigateBack.Param): Promise<any>

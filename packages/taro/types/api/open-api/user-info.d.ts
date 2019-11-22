@@ -93,42 +93,40 @@ declare namespace Taro {
    * 获取用户信息，withCredentials 为 true 时需要先调用 [Taro.login](https://developers.weixin.qq.com/miniprogram/dev/api/open-api/login/wx.login.html) 接口。
    *
    * 需要[用户授权](https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/authorize.html) scope.userInfo
+   * @example
+   * ```tsx
+   * Taro.getUserInfo({
+   *   success: function(res) {
+   *     var userInfo = res.userInfo
+   *     var nickName = userInfo.nickName
+   *     var avatarUrl = userInfo.avatarUrl
+   *     var gender = userInfo.gender //性别 0：未知、1：男、2：女
+   *     var province = userInfo.province
+   *     var city = userInfo.city
+   *     var country = userInfo.country
+   *   }
+   * })
+   * ```
    *
    * **示例代码：**
    *
-   ```tsx
-   Taro.getUserInfo({
-     success: function(res) {
-       var userInfo = res.userInfo
-       var nickName = userInfo.nickName
-       var avatarUrl = userInfo.avatarUrl
-       var gender = userInfo.gender //性别 0：未知、1：男、2：女
-       var province = userInfo.province
-       var city = userInfo.city
-       var country = userInfo.country
-     }
-   })
-   ```
-   *
-   * **示例代码：**
-   *
-   ```json
-   {
-       "openId": "OPENID",
-       "nickName": "NICKNAME",
-       "gender": GENDER,
-       "city": "CITY",
-       "province": "PROVINCE",
-       "country": "COUNTRY",
-       "avatarUrl": "AVATARURL",
-       "unionId": "UNIONID",
-       "watermark":
-       {
-           "appid":"APPID",
-       "timestamp":TIMESTAMP
-       }
-   }
-   ```
+   * ```json
+   * {
+   *     "openId": "OPENID",
+   *     "nickName": "NICKNAME",
+   *     "gender": GENDER,
+   *     "city": "CITY",
+   *     "province": "PROVINCE",
+   *     "country": "COUNTRY",
+   *     "avatarUrl": "AVATARURL",
+   *     "unionId": "UNIONID",
+   *     "watermark":
+   *     {
+   *         "appid":"APPID",
+   *     "timestamp":TIMESTAMP
+   *     }
+   * }
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/open-api/user-info/wx.getUserInfo.html
    */
   function getUserInfo(res?: getUserInfo.Param): Promise<getUserInfo.Promised>

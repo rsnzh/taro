@@ -43,13 +43,13 @@ declare namespace Taro {
   /**
    * 更新转发属性
    * @example
-   ```tsx
-   Taro.updateShareMenu({
-     withShareTicket: true,
-     success() {
-     }
-   })
-   ```
+   * ```tsx
+   * Taro.updateShareMenu({
+   *   withShareTicket: true,
+   *   success() {
+   *   }
+   * })
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/share/wx.updateShareMenu.html
    */
   function updateShareMenu(res?: updateShareMenu.Param): Promise<any>
@@ -70,11 +70,11 @@ declare namespace Taro {
   /**
    * 显示当前页面的转发按钮
    * @example
-   ```tsx
-   Taro.showShareMenu({
-     withShareTicket: true
-   })
-   ```
+   * ```tsx
+   * Taro.showShareMenu({
+   *   withShareTicket: true
+   * })
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/share/wx.showShareMenu.html
    */
   function showShareMenu(res?: showShareMenu.Param): Promise<any>
@@ -85,9 +85,9 @@ declare namespace Taro {
   /**
    * 隐藏转发按钮
    * @example
-   ```tsx
-   Taro.hideShareMenu()
-   ```
+   * ```tsx
+   * Taro.hideShareMenu()
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/share/wx.hideShareMenu.html
    */
   function hideShareMenu(res?: hideShareMenu.Param): Promise<any>

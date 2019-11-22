@@ -57,14 +57,15 @@ declare namespace Taro {
   }
   /**
    * 显示消息提示框
+   * @supported weapp, h5, rn
    * @example
-   ```tsx
-   Taro.showToast({
-     title: '成功',
-     icon: 'success',
-     duration: 2000
-   })
-   ```
+   * ```tsx
+   * Taro.showToast({
+   *   title: '成功',
+   *   icon: 'success',
+   *   duration: 2000
+   * })
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/ui/interaction/wx.showToast.html
    */
   function showToast(res: showToast.Param): Promise<any>
@@ -137,20 +138,21 @@ declare namespace Taro {
   }
   /**
    * ​显示模态弹窗
+   * @supported weapp, h5, rn
    * @example
-   ```tsx
-   Taro.showModal({
-     title: '提示',
-     content: '这是一个模态弹窗',
-     success: function(res) {
-       if (res.confirm) {
-         console.log('用户点击确定')
-       } else if (res.cancel) {
-         console.log('用户点击取消')
-       }
-     }
-   })
-   ```
+   * ```tsx
+   * Taro.showModal({
+   *   title: '提示',
+   *   content: '这是一个模态弹窗',
+   *   success: function(res) {
+   *     if (res.confirm) {
+   *       console.log('用户点击确定')
+   *     } else if (res.cancel) {
+   *       console.log('用户点击取消')
+   *     }
+   *   }
+   * })
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/ui/interaction/wx.showModal.html
    */
   function showModal(res: showModal.Param): Promise<showModal.Promised>
@@ -193,6 +195,7 @@ declare namespace Taro {
   }
   /**
    * 显示 loading 提示框, 需主动调用 [Taro.hideLoading](https://developers.weixin.qq.com/miniprogram/dev/api/ui/interaction/wx.hideLoading.html) 才能关闭提示框
+   * @supported weapp, h5, rn
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/ui/interaction/wx.showLoading.html
    */
   function showLoading(res?: showLoading.Param): Promise<any>
@@ -248,39 +251,42 @@ declare namespace Taro {
    * 2.  `tip`: Taro.showActionSheet 点击取消或蒙层时，回调 `fail`, errMsg 为 "showActionSheet:fail cancel"；
    * 3.  `tip`: Taro.showLoading 和 Taro.showToast 同时只能显示一个，但 Taro.hideToast/Taro.hideLoading 也应当配对使用；
    * 4.  `tip`: `iOS` Taro.showModal 点击蒙层不会关闭模态弹窗，所以尽量避免使用“取消”分支中实现业务逻辑。
+   * @supported weapp, h5, rn
    * @example
-   ```tsx
-   Taro.showActionSheet({
-     itemList: ['A', 'B', 'C'],
-     success: function(res) {
-       console.log(res.tapIndex)
-     },
-     fail: function(res) {
-       console.log(res.errMsg)
-     }
-   })
-   ```
+   * ```tsx
+   * Taro.showActionSheet({
+   *   itemList: ['A', 'B', 'C'],
+   *   success: function(res) {
+   *     console.log(res.tapIndex)
+   *   },
+   *   fail: function(res) {
+   *     console.log(res.errMsg)
+   *   }
+   * })
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/ui/interaction/wx.showActionSheet.html
    */
   function showActionSheet(res: showActionSheet.Param): Promise<showActionSheet.Promised>
 
   /**
    * 隐藏消息提示框
+   * @supported weapp, h5, rn
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/ui/interaction/wx.hideToast.html
    */
   function hideToast(): void
 
   /**
    * 隐藏 loading 提示框
+   * @supported weapp, h5, rn
    * @example
-   ```tsx
-   Taro.showLoading({
-     title: '加载中',
-   })
-         setTimeout(function(){
-     Taro.hideLoading()
-   },2000)
-   ```
+   * ```tsx
+   * Taro.showLoading({
+   *   title: '加载中',
+   * })
+   *       setTimeout(function(){
+   *   Taro.hideLoading()
+   * },2000)
+   * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/ui/interaction/wx.hideLoading.html
    */
   function hideLoading(): void

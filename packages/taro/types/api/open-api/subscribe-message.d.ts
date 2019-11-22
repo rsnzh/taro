@@ -7,9 +7,9 @@ declare namespace Taro {
        * `'reject'` 表示用户拒绝订阅该条 id 对应的模板消息，
        * `'ban'` 表示已被后台封禁。
        * 例如
-       ```json
-        { errMsg: "requestSubscribeMessage:ok", zun-LzcQyW-edafCVvzPkK4de2Rllr1fFpw2A_x0oXE: "accept" }
-       ```
+       * ```json
+       *  { errMsg: "requestSubscribeMessage:ok", zun-LzcQyW-edafCVvzPkK4de2Rllr1fFpw2A_x0oXE: "accept" }
+       * ```
        * 表示用户同意订阅 zun-LzcQyW-edafCVvzPkK4de2Rllr1fFpw2A_x0oXE 这条消息
        */
       [TEMPLATE_ID: string]: 'accept' | 'reject' | 'ban'
