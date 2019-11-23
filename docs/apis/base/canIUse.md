@@ -1,26 +1,21 @@
 ---
-title: Taro.canIUse(param)
+title: Taro.canIUse(schema)
 sidebar_label: canIUse
 ---
 
 判断小程序的 API，回调，参数，组件等是否在当前版本可用。
 
-**String** 参数说明：
-
-使用`${API}.${method}.${param}.${options}`或者`${component}.${attribute}.${option}`方式来调用，例如：
-  `${API}` 代表 API 名字
-  `${method}` 代表调用方式，有效值为`return`, `success`, `object`, `callback`
-  `${param}` 代表参数或者返回值
-  `${options}` 代表参数的可选值
-  `${component}` 代表组件名字
-  `${attribute}` 代表组件属性
-  `${option}` 代表组件属性的可选值
-
 ## 类型
 
 ```tsx
-(param: string) => boolean
+(schema: string) => boolean
 ```
+
+## 参数
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| schema | `string` | 使用 `${API}.${method}.${param}.${option}` 或者 `${component}.${attribute}.${option}` 方式来调用<br /><br />**参数说明**<br /><br />- `${API}` 代表 API 名字<br />- `${method}` 代表调用方式，有效值为return, success, object, callback<br />- `${param}` 代表参数或者返回值<br />- `${option}` 代表参数的可选值或者返回值的属性<br />- `${component}` 代表组件名字<br />- `${attribute}` 代表组件属性<br />- `${option}` 代表组件属性的可选值 |
 
 ## 示例代码
 

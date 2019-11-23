@@ -15,17 +15,17 @@ sidebar_label: getSystemInfo
 
 ### Option
 
-| Name | Type | Description |
-| --- | --- | --- |
-| complete | `(res: any) => void` | 接口调用结束的回调函数（调用成功、失败都会执行） |
-| fail | `(res: any) => void` | 接口调用失败的回调函数 |
-| success | `(res: Result) => void` | 接口调用成功的回调函数 |
+| 参数 | 类型 | 必填 | 说明 |
+| --- | --- | :---: | --- |
+| complete | `(res: any) => void` | 否 | 接口调用结束的回调函数（调用成功、失败都会执行） |
+| fail | `(res: any) => void` | 否 | 接口调用失败的回调函数 |
+| success | `(res: Result) => void` | 否 | 接口调用成功的回调函数 |
 
 ### Result
 
 注意：**H5** 端不支持 version、statusBarHeight、fontSizeSetting、SDKVersion
 
-| Name | Type | Description |
+| 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | SDKVersion | `string` | 客户端基础库版本 |
 | albumAuthorized | `boolean` | 允许微信使用相册的开关（仅 iOS 有效） |
@@ -55,7 +55,6 @@ sidebar_label: getSystemInfo
 | windowHeight | `number` | 可使用窗口高度，单位px |
 | windowWidth | `number` | 可使用窗口宽度，单位px |
 | errMsg | `string` |  |
-
 
 ## 示例代码
 

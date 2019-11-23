@@ -17,7 +17,7 @@ sidebar_label: getSystemInfoSync
 
 注意：**H5** 端不支持 version、statusBarHeight、fontSizeSetting、SDKVersion
 
-| Name | Type | Description |
+| 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | SDKVersion | `string` | 客户端基础库版本 |
 | albumAuthorized | `boolean` | 允许微信使用相册的开关（仅 iOS 有效） |
@@ -46,7 +46,6 @@ sidebar_label: getSystemInfoSync
 | wifiEnabled | `boolean` | Wi-Fi 的系统开关 |
 | windowHeight | `number` | 可使用窗口高度，单位px |
 | windowWidth | `number` | 可使用窗口宽度，单位px |
-
 
 ## 示例代码
 

@@ -7,17 +7,131 @@ sidebar_label: InterstitialAd
 
 ## 方法
 
-| Name | Type | Description |
-| --- | --- | --- |
-| destroy | `() => void` | 销毁插屏广告实例。<br />[参考地址](https://developers.weixin.qq.com/miniprogram/dev/api/ad/InterstitialAd.destroy.html) |
-| offClose | `(callback: OffCloseCallback) => void` | 取消监听插屏广告关闭事件<br />[参考地址](https://developers.weixin.qq.com/miniprogram/dev/api/ad/InterstitialAd.offClose.html) |
-| offError | `(callback: OffErrorCallback) => void` | 取消监听插屏错误事件<br />[参考地址](https://developers.weixin.qq.com/miniprogram/dev/api/ad/InterstitialAd.offError.html) |
-| offLoad | `(callback: OffLoadCallback) => void` | 取消监听插屏广告加载事件<br />[参考地址](https://developers.weixin.qq.com/miniprogram/dev/api/ad/InterstitialAd.offLoad.html) |
-| onClose | `(callback: OnCloseCallback) => void` | 监听插屏广告关闭事件。<br />[参考地址](https://developers.weixin.qq.com/miniprogram/dev/api/ad/InterstitialAd.onClose.html) |
-| onError | `(callback: OnErrorCallback) => void` | 监听插屏错误事件。<br />[参考地址](https://developers.weixin.qq.com/miniprogram/dev/api/ad/InterstitialAd.onError.html) |
-| onLoad | `(callback: OnLoadCallback) => void` | 监听插屏广告加载事件。<br />[参考地址](https://developers.weixin.qq.com/miniprogram/dev/api/ad/InterstitialAd.onLoad.html) |
-| load | `() => Promise<any>` | 加载插屏广告。<br />[参考地址](https://developers.weixin.qq.com/miniprogram/dev/api/ad/InterstitialAd.load.html) |
-| show | `() => Promise<any>` | 显示插屏广告。<br /><br />**错误码信息表**<br /><br /><br />如果插屏广告显示失败，InterstitialAd.show() 方法会返回一个rejected Promise，开发者可以获取到错误码及对应的错误信息。<br /><br />| 代码 | 异常情况 | 理由 |<br />| ------ | -------------- | -------------------------- |<br />| 2001  | 触发频率限制  | 小程序启动一定时间内不允许展示插屏广告 |<br />| 2002  | 触发频率限制  | 距离小程序插屏广告或者激励视频广告上次播放时间间隔不足，不允许展示插屏广告 |<br />| 2003  | 触发频率限制  | 当前正在播放激励视频广告或者插屏广告，不允许再次展示插屏广告 |<br />| 2004  | 广告渲染失败  | 该项错误不是开发者的异常情况，或因小程序页面切换导致广告渲染失败 |<br />| 2005  | 广告调用异常  | 插屏广告实例不允许跨页面调用 |<br />[参考地址](https://developers.weixin.qq.com/miniprogram/dev/api/ad/InterstitialAd.show.html) |
+### destroy
+
+销毁插屏广告实例。
+
+```tsx
+() => void
+```
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/InterstitialAd.destroy.html)
+
+### offClose
+
+取消监听插屏广告关闭事件
+
+```tsx
+(callback: OffCloseCallback) => void
+```
+
+| 参数 | 类型 |
+| --- | --- |
+| callback | `OffCloseCallback` |
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/InterstitialAd.offClose.html)
+
+### offError
+
+取消监听插屏错误事件
+
+```tsx
+(callback: OffErrorCallback) => void
+```
+
+| 参数 | 类型 |
+| --- | --- |
+| callback | `OffErrorCallback` |
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/InterstitialAd.offError.html)
+
+### offLoad
+
+取消监听插屏广告加载事件
+
+```tsx
+(callback: OffLoadCallback) => void
+```
+
+| 参数 | 类型 |
+| --- | --- |
+| callback | `OffLoadCallback` |
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/InterstitialAd.offLoad.html)
+
+### onClose
+
+监听插屏广告关闭事件。
+
+```tsx
+(callback: OnCloseCallback) => void
+```
+
+| 参数 | 类型 |
+| --- | --- |
+| callback | `OnCloseCallback` |
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/InterstitialAd.onClose.html)
+
+### onError
+
+监听插屏错误事件。
+
+```tsx
+(callback: OnErrorCallback) => void
+```
+
+| 参数 | 类型 |
+| --- | --- |
+| callback | `OnErrorCallback` |
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/InterstitialAd.onError.html)
+
+### onLoad
+
+监听插屏广告加载事件。
+
+```tsx
+(callback: OnLoadCallback) => void
+```
+
+| 参数 | 类型 |
+| --- | --- |
+| callback | `OnLoadCallback` |
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/InterstitialAd.onLoad.html)
+
+### load
+
+加载插屏广告。
+
+```tsx
+() => Promise<any>
+```
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/InterstitialAd.load.html)
+
+### show
+
+显示插屏广告。
+
+**错误码信息表**
+
+如果插屏广告显示失败，InterstitialAd.show() 方法会返回一个rejected Promise，开发者可以获取到错误码及对应的错误信息。
+
+| 代码 | 异常情况 | 理由 |
+| ------ | -------------- | -------------------------- |
+| 2001  | 触发频率限制  | 小程序启动一定时间内不允许展示插屏广告 |
+| 2002  | 触发频率限制  | 距离小程序插屏广告或者激励视频广告上次播放时间间隔不足，不允许展示插屏广告 |
+| 2003  | 触发频率限制  | 当前正在播放激励视频广告或者插屏广告，不允许再次展示插屏广告 |
+| 2004  | 广告渲染失败  | 该项错误不是开发者的异常情况，或因小程序页面切换导致广告渲染失败 |
+| 2005  | 广告调用异常  | 插屏广告实例不允许跨页面调用 |
+
+```tsx
+() => Promise<any>
+```
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/InterstitialAd.show.html)
 
 ## 参数
 
@@ -29,6 +143,10 @@ sidebar_label: InterstitialAd
 (res: CallbackResult) => void
 ```
 
+| 参数 | 类型 |
+| --- | --- |
+| res | `CallbackResult` |
+
 ### OffErrorCallback
 
 插屏错误事件的回调函数
@@ -36,6 +154,10 @@ sidebar_label: InterstitialAd
 ```tsx
 (res: CallbackResult) => void
 ```
+
+| 参数 | 类型 |
+| --- | --- |
+| res | `CallbackResult` |
 
 ### OffLoadCallback
 
@@ -45,6 +167,10 @@ sidebar_label: InterstitialAd
 (res: CallbackResult) => void
 ```
 
+| 参数 | 类型 |
+| --- | --- |
+| res | `CallbackResult` |
+
 ### OnCloseCallback
 
 插屏广告关闭事件的回调函数
@@ -52,6 +178,10 @@ sidebar_label: InterstitialAd
 ```tsx
 (res: CallbackResult) => void
 ```
+
+| 参数 | 类型 |
+| --- | --- |
+| res | `CallbackResult` |
 
 ### OnErrorCallback
 
@@ -61,6 +191,10 @@ sidebar_label: InterstitialAd
 (result: OnErrorCallbackResult) => void
 ```
 
+| 参数 | 类型 |
+| --- | --- |
+| result | `OnErrorCallbackResult` |
+
 ### OnLoadCallback
 
 插屏广告加载事件的回调函数
@@ -69,26 +203,29 @@ sidebar_label: InterstitialAd
 (res: CallbackResult) => void
 ```
 
+| 参数 | 类型 |
+| --- | --- |
+| res | `CallbackResult` |
+
 ### OnErrorCallbackResult
 
-| Name | Type | Description |
+| 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | errCode | `1000 | 1001 | 1002 | 1003 | 1004 | 1005 | 1006 | 1007 | 1008` | 错误码<br />[参考地址](https://nervjs.github.io/taro/docs/apis/General#AdErrCode) |
 | errMsg | `string` | 错误信息 |
-
 
 ## API 支持度
 
 | API | 微信小程序 | 百度小程序 | 支付宝小程序 | 字节跳动小程序 | QQ 小程序 | H5 | React Native | 快应用 |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| destroy | ✔️ |  |  |  |  |  |  |  |
-| offClose | ✔️ |  |  |  |  |  |  |  |
-| offError | ✔️ |  |  |  |  |  |  |  |
-| offLoad | ✔️ |  |  |  |  |  |  |  |
-| onClose | ✔️ |  |  |  |  |  |  |  |
-| onError | ✔️ |  |  |  |  |  |  |  |
-| onLoad | ✔️ |  |  |  |  |  |  |  |
-| load | ✔️ |  |  |  |  |  |  |  |
-| show | ✔️ |  |  |  |  |  |  |  |
+| InterstitialAd.destroy | ✔️ |  |  |  |  |  |  |  |
+| InterstitialAd.offClose | ✔️ |  |  |  |  |  |  |  |
+| InterstitialAd.offError | ✔️ |  |  |  |  |  |  |  |
+| InterstitialAd.offLoad | ✔️ |  |  |  |  |  |  |  |
+| InterstitialAd.onClose | ✔️ |  |  |  |  |  |  |  |
+| InterstitialAd.onError | ✔️ |  |  |  |  |  |  |  |
+| InterstitialAd.onLoad | ✔️ |  |  |  |  |  |  |  |
+| InterstitialAd.load | ✔️ |  |  |  |  |  |  |  |
+| InterstitialAd.show | ✔️ |  |  |  |  |  |  |  |
 
 > [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/InterstitialAd.html)

@@ -8,8 +8,14 @@ sidebar_label: arrayBufferToBase64
 ## 类型
 
 ```tsx
-(buffer: arrayBuffer) => string
+(buffer: ArrayBuffer) => string
 ```
+
+## 参数
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| buffer | `ArrayBuffer` | 要转换成 Base64 字符串的 ArrayBuffer 对象 |
 
 ## 示例代码
 
@@ -17,3 +23,5 @@ sidebar_label: arrayBufferToBase64
 const arrayBuffer = new Uint8Array([11, 22, 33])
 const base64 = Taro.arrayBufferToBase64(arrayBuffer)
 ```
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/base/wx.arrayBufferToBase64.html)

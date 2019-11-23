@@ -8,8 +8,14 @@ sidebar_label: base64ToArrayBuffer
 ## 类型
 
 ```tsx
-(base64: string) => arrayBuffer
+(base64: string) => ArrayBuffer
 ```
+
+## 参数
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| base64 | `string` | 要转化成 ArrayBuffer 对象的 Base64 字符串 |
 
 ## 示例代码
 
@@ -23,3 +29,5 @@ const arrayBuffer = Taro.base64ToArrayBuffer(base64)
 | API | 微信小程序 | 百度小程序 | 支付宝小程序 | 字节跳动小程序 | QQ 小程序 | H5 | React Native | 快应用 |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | Taro.base64ToArrayBuffer | ✔️ |  |  |  |  | ✔️ |  |  |
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/base/wx.base64ToArrayBuffer.html)

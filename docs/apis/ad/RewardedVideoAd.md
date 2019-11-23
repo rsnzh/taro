@@ -7,30 +7,132 @@ sidebar_label: RewardedVideoAd
 
 ## 方法
 
-| Name | Type | Description |
-| --- | --- | --- |
-| load | `() => Promise<any>` | 加载激励视频广告。<br />[参考地址](https://developers.weixin.qq.com/miniprogram/dev/api/ad/RewardedVideoAd.load.html) |
-| show | `() => Promise<any>` | 显示激励视频广告。激励视频广告将从屏幕下方推入。<br />[参考地址](https://developers.weixin.qq.com/miniprogram/dev/api/ad/RewardedVideoAd.show.html) |
-| destroy | `() => void` | 销毁激励视频广告实例。<br />[参考地址](https://developers.weixin.qq.com/miniprogram/dev/api/ad/RewardedVideoAd.destroy.html) |
-| offClose | `(callback: OffCloseCallback) => void` | 取消监听用户点击 `关闭广告` 按钮的事件<br />[参考地址](https://developers.weixin.qq.com/miniprogram/dev/api/ad/RewardedVideoAd.offClose.html) |
-| offError | `(callback: OffErrorCallback) => void` | 取消监听激励视频错误事件<br />[参考地址](https://developers.weixin.qq.com/miniprogram/dev/api/ad/RewardedVideoAd.offError.html) |
-| offLoad | `(callback: OffLoadCallback) => void` | 取消监听激励视频广告加载事件<br />[参考地址](https://developers.weixin.qq.com/miniprogram/dev/api/ad/RewardedVideoAd.offLoad.html) |
-| onClose | `(callback: OnCloseCallback) => void` | 监听用户点击 `关闭广告` 按钮的事件。<br />[参考地址](https://developers.weixin.qq.com/miniprogram/dev/api/ad/RewardedVideoAd.onClose.html) |
-| onError | `(callback: OnErrorCallback) => void` | 监听激励视频错误事件。<br />[参考地址](https://developers.weixin.qq.com/miniprogram/dev/api/ad/RewardedVideoAd.onError.html) |
-| onLoad | `(callback: OnLoadCallback) => void` | 监听激励视频广告加载事件。<br />[参考地址](https://developers.weixin.qq.com/miniprogram/dev/api/ad/RewardedVideoAd.onLoad.html) |
+### load
+
+加载激励视频广告。
+
+```tsx
+() => Promise<any>
+```
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/RewardedVideoAd.load.html)
+
+### show
+
+显示激励视频广告。激励视频广告将从屏幕下方推入。
+
+```tsx
+() => Promise<any>
+```
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/RewardedVideoAd.show.html)
+
+### destroy
+
+销毁激励视频广告实例。
+
+```tsx
+() => void
+```
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/RewardedVideoAd.destroy.html)
+
+### offClose
+
+取消监听用户点击 `关闭广告` 按钮的事件
+
+```tsx
+(callback: OffCloseCallback) => void
+```
+
+| 参数 | 类型 |
+| --- | --- |
+| callback | `OffCloseCallback` |
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/RewardedVideoAd.offClose.html)
+
+### offError
+
+取消监听激励视频错误事件
+
+```tsx
+(callback: OffErrorCallback) => void
+```
+
+| 参数 | 类型 |
+| --- | --- |
+| callback | `OffErrorCallback` |
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/RewardedVideoAd.offError.html)
+
+### offLoad
+
+取消监听激励视频广告加载事件
+
+```tsx
+(callback: OffLoadCallback) => void
+```
+
+| 参数 | 类型 |
+| --- | --- |
+| callback | `OffLoadCallback` |
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/RewardedVideoAd.offLoad.html)
+
+### onClose
+
+监听用户点击 `关闭广告` 按钮的事件。
+
+```tsx
+(callback: OnCloseCallback) => void
+```
+
+| 参数 | 类型 |
+| --- | --- |
+| callback | `OnCloseCallback` |
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/RewardedVideoAd.onClose.html)
+
+### onError
+
+监听激励视频错误事件。
+
+```tsx
+(callback: OnErrorCallback) => void
+```
+
+| 参数 | 类型 |
+| --- | --- |
+| callback | `OnErrorCallback` |
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/RewardedVideoAd.onError.html)
+
+### onLoad
+
+监听激励视频广告加载事件。
+
+```tsx
+(callback: OnLoadCallback) => void
+```
+
+| 参数 | 类型 |
+| --- | --- |
+| callback | `OnLoadCallback` |
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/RewardedVideoAd.onLoad.html)
 
 ## 参数
 
 ### OnErrorCallbackResult
 
-| Name | Type | Description |
+| 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | errCode | `1000 | 1001 | 1002 | 1003 | 1004 | 1005 | 1006 | 1007 | 1008` | 错误码<br />[参考地址](https://nervjs.github.io/taro/docs/apis/General#AdErrCode) |
 | errMsg | `string` | 错误信息 |
 
 ### OnCloseCallbackResult
 
-| Name | Type | Description |
+| 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | isEnded | `boolean` | 视频是否是在用户完整观看的情况下被关闭的 |
 
@@ -42,6 +144,10 @@ sidebar_label: RewardedVideoAd
 (res: CallbackResult) => void
 ```
 
+| 参数 | 类型 |
+| --- | --- |
+| res | `CallbackResult` |
+
 ### OffErrorCallback
 
 激励视频错误事件的回调函数
@@ -49,6 +155,10 @@ sidebar_label: RewardedVideoAd
 ```tsx
 (res: CallbackResult) => void
 ```
+
+| 参数 | 类型 |
+| --- | --- |
+| res | `CallbackResult` |
 
 ### OffLoadCallback
 
@@ -58,6 +168,10 @@ sidebar_label: RewardedVideoAd
 (res: CallbackResult) => void
 ```
 
+| 参数 | 类型 |
+| --- | --- |
+| res | `CallbackResult` |
+
 ### OnCloseCallback
 
 用户点击 `关闭广告` 按钮的事件的回调函数
@@ -65,6 +179,10 @@ sidebar_label: RewardedVideoAd
 ```tsx
 (result: OnCloseCallbackResult) => void
 ```
+
+| 参数 | 类型 |
+| --- | --- |
+| result | `OnCloseCallbackResult` |
 
 ### OnErrorCallback
 
@@ -74,6 +192,10 @@ sidebar_label: RewardedVideoAd
 (result: OnErrorCallbackResult) => void
 ```
 
+| 参数 | 类型 |
+| --- | --- |
+| result | `OnErrorCallbackResult` |
+
 ### OnLoadCallback
 
 激励视频广告加载事件的回调函数
@@ -82,19 +204,22 @@ sidebar_label: RewardedVideoAd
 (res: CallbackResult) => void
 ```
 
+| 参数 | 类型 |
+| --- | --- |
+| res | `CallbackResult` |
 
 ## API 支持度
 
 | API | 微信小程序 | 百度小程序 | 支付宝小程序 | 字节跳动小程序 | QQ 小程序 | H5 | React Native | 快应用 |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| load | ✔️ |  |  |  |  |  |  |  |
-| show | ✔️ |  |  |  |  |  |  |  |
-| destroy | ✔️ |  |  |  |  |  |  |  |
-| offClose | ✔️ |  |  |  |  |  |  |  |
-| offError | ✔️ |  |  |  |  |  |  |  |
-| offLoad | ✔️ |  |  |  |  |  |  |  |
-| onClose | ✔️ |  |  |  |  |  |  |  |
-| onError | ✔️ |  |  |  |  |  |  |  |
-| onLoad | ✔️ |  |  |  |  |  |  |  |
+| RewardedVideoAd.load | ✔️ |  |  |  |  |  |  |  |
+| RewardedVideoAd.show | ✔️ |  |  |  |  |  |  |  |
+| RewardedVideoAd.destroy | ✔️ |  |  |  |  |  |  |  |
+| RewardedVideoAd.offClose | ✔️ |  |  |  |  |  |  |  |
+| RewardedVideoAd.offError | ✔️ |  |  |  |  |  |  |  |
+| RewardedVideoAd.offLoad | ✔️ |  |  |  |  |  |  |  |
+| RewardedVideoAd.onClose | ✔️ |  |  |  |  |  |  |  |
+| RewardedVideoAd.onError | ✔️ |  |  |  |  |  |  |  |
+| RewardedVideoAd.onLoad | ✔️ |  |  |  |  |  |  |  |
 
 > [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ad/RewardedVideoAd.html)

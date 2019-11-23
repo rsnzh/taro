@@ -1,19 +1,13 @@
 declare namespace Taro {
   namespace setClipboardData {
     type Promised = {
-      /**
-       * 错误信息
-       */
+      /** 错误信息 */
       errMsg: string
-      /**
-       * 剪贴板的内容
-       */
+      /** 剪贴板的内容 */
       data: string
     }
     type Param = {
-      /**
-       * 需要设置的内容
-       */
+      /** 需要设置的内容 */
       data: string
     }
   }
@@ -21,6 +15,8 @@ declare namespace Taro {
    * 设置系统剪贴板的内容
    * 
    * **注意** 调用成功后，会弹出 toast 提示"内容已复制"，持续 1.5s
+   * @supported weapp, h5, rn
+   * @h5 部分实现
    * @example
    * ```tsx
    * Taro.setClipboardData({
@@ -40,19 +36,17 @@ declare namespace Taro {
 
   namespace getClipboardData {
     type Promised = {
-      /**
-       * 错误信息
-       */
+      /** 错误信息 */
       errMsg: string
-      /**
-       * 剪贴板的内容
-       */
+      /** 剪贴板的内容 */
       data: string
     }
     type Param = {}
   }
   /**
    * 获取系统剪贴板内容
+   * @supported weapp, h5, rn
+   * @h5 部分实现
    * @example
    * ```tsx
    * Taro.getClipboardData({

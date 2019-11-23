@@ -15,11 +15,10 @@ sidebar_label: createRewardedVideoAd
 
 ### Option
 
-| Name | Type | Default | Description |
-| --- | --- | :---: | --- |
-| adUnitId | `string` |  | 广告单元 id |
-| multiton | `boolean` | `false` | 是否启用多例模式 |
-
+| 参数 | 类型 | 默认值 | 必填 | 说明 |
+| --- | --- | :---: | :---: | --- |
+| adUnitId | `string` |  | 是 | 广告单元 id |
+| multiton | `boolean` | `false` | 否 | 是否启用多例模式 |
 
 ## API 支持度
 
