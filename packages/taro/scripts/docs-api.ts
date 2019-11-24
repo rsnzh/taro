@@ -123,17 +123,20 @@ const get = {
   members: (data?: DocEntry[], title = '方法', level: number = 2) => {
     if (!data) return undefined
     const methods: (string | undefined)[] = [level === 2 ? `## ${title}\n` : undefined]
-    const paramLens = data && data.reduce((s, v) => v.name !== ts.InternalSymbolName.Call && !isShowMembers(v.flags) && ++s, 0)
+    const paramTabs: DocEntry[] = []
+    data.forEach(v => {
+      v.name !== ts.InternalSymbolName.Call && !isShowMembers(v.flags) && paramTabs.push(v)
+    })
 
-    if (paramLens > 0) {
-      const hasName = data.some(v => !!v.name)
-      const hasType = data.some(v => !!v.type && !isntShowType.includes(v.type))
-      const hasDef = data.some(v => !!v.jsTags && v.jsTags.some(vv => vv.name === 'default'))
-      const hasOptional = data.some(v => isOptional(v.flags))
-      const hasAbnormal = data.some(v => !!v.jsTags && v.jsTags.some(vv => vv.name === 'abnormal'))
-      const hasReason = data.some(v => !!v.jsTags && v.jsTags.some(vv => vv.name === 'reason'))
-      const hasSolution = data.some(v => !!v.jsTags && v.jsTags.some(vv => vv.name === 'solution'))
-      const hasDes = data.some(v => !!v.documentation)
+    if (paramTabs.length > 0) {
+      const hasName = paramTabs.some(v => !!v.name)
+      const hasType = paramTabs.some(v => !!v.type && !isntShowType.includes(v.type))
+      const hasDef = paramTabs.some(v => !!v.jsTags && v.jsTags.some(vv => vv.name === 'default'))
+      const hasOptional = paramTabs.some(v => isOptional(v.flags))
+      const hasAbnormal = paramTabs.some(v => !!v.jsTags && v.jsTags.some(vv => vv.name === 'abnormal'))
+      const hasReason = paramTabs.some(v => !!v.jsTags && v.jsTags.some(vv => vv.name === 'reason'))
+      const hasSolution = paramTabs.some(v => !!v.jsTags && v.jsTags.some(vv => vv.name === 'solution'))
+      const hasDes = paramTabs.some(v => !!v.documentation)
 
       hasName && [hasType, hasDef, hasAbnormal, hasReason, hasSolution, hasDes].reduce((s, b) => {
         b && s++
@@ -141,7 +144,7 @@ const get = {
       }, 0) > 0 && methods.push(splicing([
         `| ${hasName ? '参数 |' : ''}${hasType? ' 类型 |' :''}${hasDef? ' 默认值 |' :''}${hasOptional? ' 必填 |' :''}${hasAbnormal? ' 异常情况 |' :''}${hasReason? ' 理由 |' :''}${hasSolution? ' 解决方案 |' :''}${hasDes? ' 说明 |' :''}`,
         `|${hasName? ' --- |' :''}${hasType? ' --- |' :''}${hasDef? ' :---: |' :''}${hasOptional? ' :---: |' :''}${hasAbnormal? ' :---: |' :''}${hasReason? ' :---: |' :''}${hasSolution? ' :---: |' :''}${hasDes? ' --- |' :''}`,
-        ...data.map(v => {
+        ...paramTabs.map(v => {
           const vtags = v.jsTags || [];
           const def = vtags.find(tag => tag.name === 'default') || { text: '' }
           const abnormal = vtags.find(tag => tag.name === 'abnormal') || { text: '' }

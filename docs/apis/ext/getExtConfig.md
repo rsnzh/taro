@@ -1,9 +1,12 @@
 ---
-title: Taro.getSavedFileList(option)
-sidebar_label: getSavedFileList
+title: Taro.getExtConfig(option)
+sidebar_label: getExtConfig
 ---
 
-获取本地已保存的文件列表
+获取[第三方平台](https://developers.weixin.qq.com/miniprogram/dev/devtools/ext.html)自定义的数据字段。
+
+**Tips**
+1. 本接口暂时无法通过 Taro.canIUse 判断是否兼容，开发者需要自行判断 Taro.getExtConfig 是否存在来兼容
 
 ## 类型
 
@@ -25,33 +28,25 @@ sidebar_label: getSavedFileList
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| fileList | `FileItem[]` | 文件数组 |
+| extConfig | `Record<string, any>` | 第三方平台自定义的数据 |
 | errMsg | `string` | 调用结果 |
-
-### FileItem
-
-文件数组
-
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| createTime | `number` | 文件保存时的时间戳，从1970/01/01 08:00:00 到当前时间的秒数 |
-| filePath | `string` | 本地路径 |
-| size | `number` | 本地文件大小，以字节为单位 |
 
 ## 示例代码
 
 ```tsx
-Taro.getSavedFileList({
-  success: function(res) {
-    console.log(res.fileList)
-  }
-})
+if(Taro.getExtConfig) {
+  Taro.getExtConfig({
+    success: function (res) {
+      console.log(res.extConfig)
+    }
+  })
+}
 ```
 
 ## API 支持度
 
 | API | 微信小程序 | 百度小程序 | 支付宝小程序 | 字节跳动小程序 | QQ 小程序 | H5 | React Native | 快应用 |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| Taro.getSavedFileList | ✔️ |  |  |  |  |  |  |  |
+| Taro.getExtConfig | ✔️ |  |  |  |  |  |  |  |
 
-> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/file/wx.getSavedFileList.html)
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/ext/wx.getExtConfig.html)
