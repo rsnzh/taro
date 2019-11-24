@@ -1,23 +1,37 @@
 ---
-title: Taro.getConnectedWifi(OBJECT)
+title: Taro.getConnectedWifi(option)
 sidebar_label: getConnectedWifi
 ---
 
+获取已连接中的 Wi-Fi 信息。
 
-使用方式同 [`wx.getConnectedWifi`](https://developers.weixin.qq.com/miniprogram/dev/api/wx.getConnectedWifi.html)，支持 `Promise` 化使用。
+## 类型
 
-## 示例代码
-
-```jsx
-import Taro from '@tarojs/taro'
-
-Taro.getConnectedWifi(params).then(...)
+```tsx
+(option?: Option) => Promise<WifiError>
 ```
 
-## API支持度
+## 参数
 
+### Option
 
-| API | 微信小程序 | H5 | React Native |
-| :-: | :-: | :-: | :-: |
-| Taro.getConnectedWifi | ✔️ |  |  |
+| 参数 | 类型 | 必填 | 说明 |
+| --- | --- | :---: | --- |
+| complete | `(res: WifiError) => void` | 否 | 接口调用结束的回调函数（调用成功、失败都会执行） |
+| fail | `(res: WifiError) => void` | 否 | 接口调用失败的回调函数 |
+| success | `(result: SuccessCallbackResult) => void` | 否 | 接口调用成功的回调函数 |
 
+### SuccessCallbackResult
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| wifi | `WifiInfo` | Wi-Fi 信息 |
+| errMsg | `string` | 调用结果 |
+
+## API 支持度
+
+| API | 微信小程序 | 百度小程序 | 支付宝小程序 | 字节跳动小程序 | QQ 小程序 | H5 | React Native | 快应用 |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| Taro.getConnectedWifi | ✔️ |  |  |  |  |  |  |  |
+
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/device/wifi/wx.getConnectedWifi.html)

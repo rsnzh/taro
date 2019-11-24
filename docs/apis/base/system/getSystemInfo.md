@@ -54,7 +54,7 @@ sidebar_label: getSystemInfo
 | wifiEnabled | `boolean` | Wi-Fi 的系统开关 |
 | windowHeight | `number` | 可使用窗口高度，单位px |
 | windowWidth | `number` | 可使用窗口宽度，单位px |
-| errMsg | `string` |  |
+| errMsg | `string` | 调用结果 |
 
 ## 示例代码
 

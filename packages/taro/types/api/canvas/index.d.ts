@@ -298,8 +298,8 @@ declare namespace Taro {
      *
      *
    ```tsx
-   const ctx = wx.createCanvasContext('myCanvas')
-   wx.downloadFile({
+   const ctx = Taro.createCanvasContext('myCanvas')
+   Taro.downloadFile({
    url: 'http://is5.mzstatic.com/image/thumb/Purple128/v4/75/3b/90/753b907c-b7fb-5877-215a-759bd73691a4/source/50x50bb.jpg',
    success: function(res) {
    ctx.save()
@@ -419,8 +419,8 @@ declare namespace Taro {
      * - drawImage(imageResource, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) 从 1.9.0 起支持
      *
    ```tsx
-   const ctx = wx.createCanvasContext('myCanvas')
-   wx.chooseImage({
+   const ctx = Taro.createCanvasContext('myCanvas')
+   Taro.chooseImage({
    success: function(res){
    ctx.drawImage(res.tempFilePaths[0], 0, 0, 150, 100)
    ctx.draw()
@@ -1468,7 +1468,7 @@ declare namespace Taro {
    * ```
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/canvas/wx.canvasPutImageData.html
    */
-  function canvasPutImageData(res: canvasPutImageData.Param): Promise<any>
+  function canvasPutImageData(res: canvasPutImageData.Param): Promise<General.CallbackResult>
 
   namespace canvasGetImageData {
     type Promised = {

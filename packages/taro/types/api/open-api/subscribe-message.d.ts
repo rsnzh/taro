@@ -58,7 +58,7 @@ declare namespace Taro {
    * ```tsx
    * wx.requestSubscribeMessage({
    *   tmplIds: [ 'zun-LzcQyW-edafCVvzPkK4de2Rllr1fFpw2A_x0oXE' ],
-   *   success (res) { 
+   *   success: function(res) { 
    *     var key =  res.zun-LzcQyW-edafCVvzPkK4de2Rllr1fFpw2A_x0oXE
    *     var msg = res.errMsg
    *   }

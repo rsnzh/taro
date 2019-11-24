@@ -95,7 +95,7 @@ declare namespace Taro {
     /**
      * 注意：**H5** 端不支持 version、statusBarHeight、fontSizeSetting、SDKVersion
      */
-    interface Result {
+    interface Result extends General.CallbackResult {
       /** 客户端基础库版本 */
       SDKVersion: string
       /** 允许微信使用相册的开关（仅 iOS 有效） */
@@ -150,6 +150,7 @@ declare namespace Taro {
       windowHeight: number
       /** 可使用窗口宽度，单位px */
       windowWidth: number
+      /** 调用结果 */
       errMsg: string
   }
   }

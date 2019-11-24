@@ -8,7 +8,7 @@ sidebar_label: startAccelerometer
 ## 类型
 
 ```tsx
-(res?: Option) => Promise<any>
+(res?: Option) => Promise<CallbackResult>
 ```
 
 ## 参数

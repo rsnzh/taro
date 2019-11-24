@@ -32,7 +32,7 @@ declare namespace Taro {
    * @supported weapp, h5, rn
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/device/accelerometer/wx.startAccelerometer.html
    */
-  function startAccelerometer (res?: startAccelerometer.Option): Promise<any>
+  function startAccelerometer (res?: startAccelerometer.Option): Promise<General.CallbackResult>
 
   namespace stopAccelerometer {
     type Option = {
@@ -53,7 +53,7 @@ declare namespace Taro {
    * @supported weapp, h5, rn
    * @see https://developers.weixin.qq.com/miniprogram/dev/api/device/accelerometer/wx.stopAccelerometer.html
    */
-  function stopAccelerometer (res?: stopAccelerometer.Option): Promise<any>
+  function stopAccelerometer (res?: stopAccelerometer.Option): Promise<General.CallbackResult>
 
   namespace onAccelerometerChange {
     type Callback = (res: Result) => void
