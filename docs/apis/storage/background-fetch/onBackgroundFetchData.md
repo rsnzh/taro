@@ -1,14 +1,14 @@
 ---
-title: Taro.removeStorage(option)
-sidebar_label: removeStorage
+title: Taro.onBackgroundFetchData(option)
+sidebar_label: onBackgroundFetchData
 ---
 
-从本地缓存中移除指定 key
+收到 backgroundFetch 数据时的回调
 
 ## 类型
 
 ```tsx
-(option: Option) => Promise<CallbackResult>
+(option?: Option) => void
 ```
 
 ## 参数
@@ -17,34 +17,14 @@ sidebar_label: removeStorage
 
 | 参数 | 类型 | 必填 | 说明 |
 | --- | --- | :---: | --- |
-| key | `string` | 是 | 本地缓存中指定的 key |
 | complete | `(res: CallbackResult) => void` | 否 | 接口调用结束的回调函数（调用成功、失败都会执行） |
 | fail | `(res: CallbackResult) => void` | 否 | 接口调用失败的回调函数 |
 | success | `(res: CallbackResult) => void` | 否 | 接口调用成功的回调函数 |
-
-## 示例代码
-
-```tsx
-Taro.removeStorage({
-  key: 'key',
-  success (res) {
-    console.log(res)
-  }
-})
-```
-
-```tsx
-try {
-  Taro.removeStorageSync('key')
-} catch (e) {
-  // Do something when catch error
-}
-```
 
 ## API 支持度
 
 | API | 微信小程序 | 百度小程序 | 支付宝小程序 | 字节跳动小程序 | QQ 小程序 | H5 | React Native | 快应用 |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| Taro.removeStorage | ✔️ |  |  |  |  | ✔️ | ✔️ |  |
+| Taro.onBackgroundFetchData | ✔️ |  |  |  |  |  |  |  |
 
-> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.removeStorage.html)
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/storage/background-fetch/wx.onBackgroundFetchData.html)

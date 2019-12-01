@@ -1,31 +1,48 @@
 ---
-title: Taro.getStorageSync(KEY)
+title: Taro.getStorageSync(key)
 sidebar_label: getStorageSync
 ---
 
+Taro.getStorage 的同步版本
 
-从本地缓存中同步获取指定 key 对应的内容。
+## 类型
 
-**参数说明：**
+```tsx
+(key: string) => any
+```
 
-| 参数 | 类型 | 必填 | 说明 |
-| :-- | :-- | :-- | :-- |
-| key | String | 是 | 本地缓存中的指定的 key |
+## 参数
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| key | `string` | 本地缓存中指定的 key |
 
 ## 示例代码
 
-```jsx
-import Taro from '@tarojs/taro'
-
-const data = Taro.getStorageSync('key')
+```tsx
+Taro.getStorage({
+  key: 'key',
+  success (res) {
+    console.log(res.data)
+  }
+})
 ```
 
+```tsx
+try {
+  var value = Taro.getStorageSync('key')
+  if (value) {
+    // Do something with return value
+  }
+} catch (e) {
+  // Do something when catch error
+}
+```
 
+## API 支持度
 
-## API支持度
+| API | 微信小程序 | 百度小程序 | 支付宝小程序 | 字节跳动小程序 | QQ 小程序 | H5 | React Native | 快应用 |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| Taro.getStorageSync | ✔️ |  |  |  |  | ✔️ |  |  |
 
-
-| API | 微信小程序 | H5 | React Native |
-| :-: | :-: | :-: | :-: |
-| Taro.getStorageSync | ✔️ | ✔️ |  |
-
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.getStorageSync.html)

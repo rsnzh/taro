@@ -1,32 +1,41 @@
 ---
-title: Taro.setStorageSync(KEY, DATA)
+title: Taro.setStorageSync(key, data)
 sidebar_label: setStorageSync
 ---
 
+Taro.setStorage 的同步版本
 
-将 data 存储在本地缓存中指定的 key 中，会覆盖掉原来该 key 对应的内容，这是一个同步接口。
+## 类型
 
-**参数说明：**
+```tsx
+(key: string, data: any) => void
+```
 
-| 参数 | 类型 | 必填 | 说明 |
-| :-- | :-- | :-- | :-- |
-| key | String | 是 | 本地缓存中的指定的 key |
-| data | Object/String | 是 | 需要存储的内容 |
+## 参数
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| key | `string` | 本地缓存中指定的 key |
+| data | `any` | 需要存储的内容。只支持原生类型、Date、及能够通过`JSON.stringify`序列化的对象。 |
 
 ## 示例代码
 
-```jsx
-import Taro from '@tarojs/taro'
-
-Taro.setStorageSync('key', 'value')
+```tsx
+Taro.setStorage({
+  key:"key",
+  data:"value"
+})
+```
+```tsx
+try {
+  Taro.setStorageSync('key', 'value')
+} catch (e) { }
 ```
 
+## API 支持度
 
+| API | 微信小程序 | 百度小程序 | 支付宝小程序 | 字节跳动小程序 | QQ 小程序 | H5 | React Native | 快应用 |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| Taro.setStorageSync | ✔️ |  |  |  |  | ✔️ |  |  |
 
-## API支持度
-
-
-| API | 微信小程序 | H5 | React Native |
-| :-: | :-: | :-: | :-: |
-| Taro.setStorageSync | ✔️ | ✔️ |  |
-
+> [参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.setStorageSync.html)
