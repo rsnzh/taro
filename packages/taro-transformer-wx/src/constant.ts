@@ -70,7 +70,7 @@ export const INTERNAL_INLINE_STYLE = 'internal_inline_style'
 
 export const INTERNAL_GET_ORIGNAL = 'internal_get_original'
 
-export const GEL_ELEMENT_BY_ID = 'getElementById'
+export const HANDLE_LOOP_REF = 'handleLoopRef'
 
 export const PROPS_MANAGER = 'propsManager'
 
@@ -95,6 +95,8 @@ export let LOOP_ORIGINAL = '$original'
 export const setLoopOriginal = (s: string) => LOOP_ORIGINAL = s
 
 export let LOOP_CALLEE = '$anonymousCallee_'
+
+export const LOOP_ARRAY = '$anonymousArray_'
 
 export let setLoopCallee = (s: string) => LOOP_CALLEE = s
 

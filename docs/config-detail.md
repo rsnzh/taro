@@ -505,30 +505,6 @@ dev 状态默认 **开**，prod 状态默认 **关**。
 ### h5.sourceMapType
 sourceMap格式, 默认cheap-module-eval-source-map。[具体配置](https://webpack.js.org/configuration/devtool/#devtool)
 
-### h5.enableDll
-
-dll 开关，开启后将使用 `dllPlugin` 把内置的部分依赖库打包为单独的 dll 文件，
-某种程度上可以减少首屏单个文件体积。
-dev 状态默认 **关**，prod 状态默认 **开**。
-
-### h5.dllWebpackChain
-
-同 `h5.webpackChain`，不过作用于 dll。
-
-### h5.dllEntry
-
-dll编译过程的 `entry` 配置项，决定了 dll 文件的内容，可参考 [webpack.entry](https://webpack.js.org/configuration/entry-context/#entry)。默认值：
-
-```js
-h5: {
-  /* 其他配置 */
-  ...,
-  dllEntry: {
-    lib: ['nervjs', '@tarojs/taro-h5', '@tarojs/router', '@tarojs/components']
-  }
-}
-```
-
 ### h5.enableExtract
 
 extract 功能开关，开启后将使用 `mini-css-extract-plugin` 分离 css 文件，
@@ -630,6 +606,23 @@ stylus-loader 的附加配置。配置项参考[官方文档](https://github.com
   miniCssExtractPluginOption: {
     filename: 'css/[name].css',
     chunkFilename: 'css/[id].css'
+  }
+}
+```
+
+### h5.miniCssExtractLoaderOption
+
+`mini-css-extract-plugin` 的loader配置，在 `enableExtract` 为 `true` 的情况下生效。与 `miniCssExtractPluginOption` 选项配合使用。
+可以配置对应的loader config，配置项参考[官方文档](https://github.com/webpack-contrib/mini-css-extract-plugin)，例如：
+
+```jsx
+{
+  miniCssExtractPluginOption: {
+    filename: 'css/[name].css',
+    chunkFilename: 'css/[id].css'
+  },
+  miniCssExtractLoaderOption: {
+    publicPath: '../'
   }
 }
 ```

@@ -8,10 +8,11 @@ import {
   findMethodName,
   pathResolver,
   createRandomLetters,
+  createUniPathID,
   isContainJSXElement,
   getSlotName,
   isArrayMapCallExpression,
-  incrementId,
+  getScopeUid,
   isContainStopPropagation,
   isDerivedFromProps,
   findFirstIdentifierFromMemberExpression,
@@ -123,7 +124,6 @@ class Transformer {
   private sourceDir: string
   private refs: Ref[] = []
   private loopRefs: Map<t.JSXElement, LoopRef> = new Map()
-  private anonymousFuncCounter = incrementId()
   private importJSXs = new Set<String>()
   private refObjExpr: t.ObjectExpression[] = []
 
@@ -225,17 +225,17 @@ class Transformer {
   buildAnonyMousFunc = (jsxExpr: NodePath<t.JSXExpressionContainer>, attr: NodePath<t.JSXAttribute>, expr: t.Expression) => {
     const exprPath = attr.get('value.expression')
     const stemParent = jsxExpr.getStatementParent()
-    const counter = this.anonymousFuncCounter()
-    const anonymousFuncName = `${ANONYMOUS_FUNC}${counter}`
+    const getCounterId = () => getScopeUid(this.classPath.scope, ANONYMOUS_FUNC)
+    const counterId = getCounterId()
+    const anonymousFuncName = `${ANONYMOUS_FUNC}${counterId}`
     const isCatch = isContainStopPropagation(exprPath)
     const classBody = this.classPath.node.body.body
     const loopCallExpr = jsxExpr.findParent(p => isArrayMapCallExpression(p)) as NodePath<t.CallExpression>
     let index: t.Identifier
-    const self = this
     if (loopCallExpr) {
       index = safeGet(loopCallExpr, 'node.arguments[0].params[1]')
       if (!t.isIdentifier(index)) {
-        index = t.identifier('__index' + counter)
+        index = t.identifier('__index' + counterId)
         safeSet(loopCallExpr, 'node.arguments[0].params[1]', index)
       }
       classBody.push(t.classProperty(t.identifier(anonymousFuncName + 'Map'), t.objectExpression([])))
@@ -247,7 +247,7 @@ class Transformer {
         while (callExpr = callExpr.findParent(p => isArrayMapCallExpression(p) && p !== callExpr) as NodePath<t.CallExpression>) {
           let index = safeGet(callExpr, 'node.arguments[0].params[1]')
           if (!t.isIdentifier(index)) {
-            index = t.identifier('__index' + self.anonymousFuncCounter())
+            index = t.identifier('__index' + getCounterId())
             safeSet(callExpr, 'node.arguments[0].params[1]', index)
           }
           indices.add(index)
@@ -352,7 +352,7 @@ class Transformer {
             methodName === 'render'
               ? t.identifier('__prefix')
               : t.identifier(CLASS_COMPONENT_UID),
-            t.stringLiteral(createRandomLetters(10))
+            t.stringLiteral(createUniPathID(this.sourcePath.replace(this.sourceDir, '')))
           )]),
           args
         )
@@ -384,7 +384,7 @@ class Transformer {
           return
         }
         const idAttr = findJSXAttrByName(attrs, 'id')
-        let id: string = createRandomLetters(5)
+        let id: string = createUniPathID(this.sourcePath.replace(this.sourceDir, ''))
         let idExpr: t.Expression
         if (!idAttr) {
           if (loopCallExpr && loopCallExpr.isCallExpression()) {
@@ -816,7 +816,7 @@ class Transformer {
               if (t.isJSXElement(valueAttr.value)) {
                 throw codeFrameError(valueAttr.value, 'Provider 的 value 只能传入一个字符串或普通表达式，不能传入 JSX')
               } else {
-                const value = t.isStringLiteral(valueAttr.value) ? valueAttr.value : valueAttr.value.expression
+                const value = t.isStringLiteral(valueAttr.value) ? valueAttr.value : valueAttr.value!.expression
                 const expr = t.expressionStatement(t.callExpression(
                   t.memberExpression(t.identifier(contextName), t.identifier('Provider')),
                   [value]
@@ -962,6 +962,7 @@ class Transformer {
           ))
         ]))
       this.classPath.node.body.body = this.classPath.node.body.body.concat(method)
+    // @ts-ignore
     } else if (t.isMemberExpression(expr) && !t.isThisExpression(expr.object)) {
       // @TODO: 新旧 props 系统在事件处理上耦合太深，快应用应用新 props 把旧 props 系统逻辑全部清楚
       this.buildAnonyMousFunc(path, attr, expr)

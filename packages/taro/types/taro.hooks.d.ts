@@ -196,14 +196,14 @@ declare namespace Taro {
    *
    * Usage note: if calling `useMemo` with a referentially stable function, also give it as the input in
    * the second argument.
-   *
-  ```ts
-  function expensive () { ... }
-  function Component () {
-    const expensiveResult = useMemo(expensive, [expensive])
-    return ...
-  }
-  ```
+   * @example
+   * ```ts
+   * function expensive () { ... }
+   * function Component () {
+   *   const expensiveResult = useMemo(expensive, [expensive])
+   *   return ...
+   * }
+   * ```
    *
    * @version 16.8.0
    * @see https://reactjs.org/docs/hooks-reference.html#usememo
@@ -263,6 +263,18 @@ declare namespace Taro {
    * 点击 tab 时触发
    */
   function useTabItemTap (callback: (obj: TabItemTapObject) => any)
+  /**
+   * 微信小程序，监听右上角菜单“分享到朋友圈”按钮的行为，并自定义发享内容。
+   * @since 2.11.3
+   * @see https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onShareTimeline
+   */
+  function useShareTimeline (callback: () => ShareTimelineReturn)
+  /**
+   * 微信小程序，监听用户点击右上角菜单“收藏”按钮的行为，并自定义收藏内容。
+   * @since 2.11.3
+   * @see https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onAddToFavorites-Object-object
+   */
+  function useAddToFavorites (callback: (obj: AddToFavoritesObject) => AddToFavoritesReturn)
   /**
    * 获取页面传入路由相关参数
    */

@@ -22,40 +22,29 @@ declare namespace Taro {
     onShareAppMessage?(obj: ShareAppMessageObject): ShareAppMessageReturn
     onTabItemTap?(obj: TabItemTapObject): void
     onResize?(obj: any): void
-  }
-
-  interface Component<P = {}, S = {}, SS = any> extends ComponentLifecycle<P, S, SS> {
-    $scope?: any
+        /**
+     * 微信小程序，监听右上角菜单“分享到朋友圈”按钮的行为，并自定义发享内容。
+     * @since 2.11.3
+     * @see https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onShareTimeline
+     */
+    onShareTimeline?(): ShareTimelineReturn
+    /**
+     * 微信小程序，监听用户点击右上角菜单“收藏”按钮的行为，并自定义收藏内容。
+     * @since 2.11.3
+     * @see https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onAddToFavorites-Object-object
+     */
+    onAddToFavorites?(obj: AddToFavoritesObject): AddToFavoritesReturn
   }
 
   interface ComponentOptions {
     addGlobalClass?: boolean
   }
-
-  interface FunctionComponent<P = {}> {
-    (props: Readonly<P>): JSX.Element
-    defaultProps?: Partial<P>
-    config?: Config
-    options?: ComponentOptions
-  }
-
-  type FC<P = {}> = FunctionComponent<P>
-
-  interface StatelessFunctionComponent {
-    (): JSX.Element
-  }
-
-  type SFC = StatelessFunctionComponent
 
   interface ComponentClass<P = {}, S = any> extends StaticLifecycle<P, S> {
     new (...args: any[]): Component<P, {}>
-    propTypes?: any
+    propTypes?: any // TODO: Use prop-types type definition.
     defaultProps?: Partial<P>
     displayName?: string
-  }
-
-  interface ComponentOptions {
-    addGlobalClass?: boolean
   }
 
   interface RouterInfo {
@@ -106,7 +95,16 @@ declare namespace Taro {
     }
   }
 
+  interface Component<P = {}, S = {}, SS = any> extends ComponentLifecycle<P, S, SS> {
+    $scope?: any
+  }
+
   class Component<P, S> {
+    constructor(props?: Readonly<P>)
+    /**
+     * @deprecated
+     * @see https://reactjs.org/docs/legacy-context.html
+     */
     constructor(props?: P, context?: any)
 
     config?: Config
@@ -135,15 +133,34 @@ declare namespace Taro {
 
     forceUpdate(callBack?: () => any): void
 
-    render(): any
+    render(): React.ReactNode
 
-    props: Readonly<P> & Readonly<{ children?: any }>
+    readonly props: Readonly<P> & Readonly<{ children?: React.ReactNode }>
     state: Readonly<S>
     context: any
     refs: {
       [key: string]: any
     }
   }
+
+  type PropsWithChildren<P> = P & { children?: React.ReactNode };
+
+  interface FunctionComponent<P = {}> {
+    (props: PropsWithChildren<P>, context?: any): React.ReactElement | null
+    propTypes?: any // TODO: Use prop-types type definition.
+    defaultProps?: Partial<P>
+    config?: Config
+    options?: ComponentOptions
+		externalClasses?: string[]
+  }
+
+  type FC<P = {}> = FunctionComponent<P>
+
+  interface StatelessFunctionComponent {
+    (): JSX.Element
+  }
+
+  type SFC = StatelessFunctionComponent
 
   class PureComponent<P = {}, S = {}> extends Component<P, S> {}
 

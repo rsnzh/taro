@@ -76,7 +76,7 @@ declare namespace Taro {
   function pxTransform(size: number): string
   function initPxTransform(config: { designWidth: number; deviceRatio: object })
 
-  interface RequestParams extends request.Param<any> {
+  interface RequestParams extends request.Option<any> {
     [propName: string]: any
   }
 
@@ -101,4 +101,6 @@ declare namespace Taro {
    * 小程序引用插件 JS 接口
    */
   function requirePlugin(pluginName: string): any
+
+  function setIsUsingDiff (flag: boolean)
 }

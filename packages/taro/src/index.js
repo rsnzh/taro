@@ -8,7 +8,7 @@ import { getOriginal as internal_get_original } from './internal/get-original'
 import { getEnv, ENV_TYPE } from './env'
 import Events from './events'
 import render from './render'
-import { createRef, commitAttachRef, detachAllRef, RefsArray } from './ref'
+import { createRef, commitAttachRef, detachAllRef, RefsArray, handleLoopRef } from './ref'
 import Link from './interceptor'
 import * as interceptors from './interceptor/interceptors'
 import {
@@ -37,12 +37,15 @@ import {
   useShareAppMessage,
   useTabItemTap,
   useRouter,
+  useShareTimeline,
+  useAddToFavorites,
   useScope,
   forceUpdateCallback as internal_force_update
 } from './hooks'
 import { Current } from './current'
 import { createContext } from './create-context'
 import { memo } from './memo'
+import { setIsUsingDiff, getIsUsingDiff } from './util'
 
 let eventCenter
 if (process.env.TARO_ENV === 'alipay') {
@@ -76,6 +79,7 @@ export {
   Link,
   interceptors,
   RefsArray,
+  handleLoopRef,
   Current,
   useEffect,
   useLayoutEffect,
@@ -90,6 +94,8 @@ export {
   useShareAppMessage,
   useTabItemTap,
   useRouter,
+  useShareTimeline,
+  useAddToFavorites,
   useScope,
   useRef,
   useCallback,
@@ -98,7 +104,9 @@ export {
   invokeEffects,
   useContext,
   createContext,
-  memo
+  memo,
+  getIsUsingDiff,
+  setIsUsingDiff
 }
 
 export default {
@@ -123,6 +131,7 @@ export default {
   Link,
   interceptors,
   RefsArray,
+  handleLoopRef,
   Current,
   useEffect,
   useLayoutEffect,
@@ -145,5 +154,7 @@ export default {
   invokeEffects,
   useContext,
   createContext,
-  memo
+  memo,
+  getIsUsingDiff,
+  setIsUsingDiff
 }

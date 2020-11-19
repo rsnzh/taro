@@ -1,5 +1,5 @@
 {
-  "lerna": "2.10.0",
+  "lerna": "3.20.1",
   "packages": [
     "packages/taro",
     "packages/taro-utils",
@@ -54,6 +54,6 @@
       "message": "chore(release): publish %s"
     }
   },
-  "version": "1.3.26",
-  "npmClient": "npm"
+  "version": "1.3.46",
+  "npmClient": "yarn"
 }

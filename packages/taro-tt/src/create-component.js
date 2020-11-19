@@ -24,7 +24,9 @@ function bindProperties (weappComponentConf, ComponentClass, isPage) {
     type: null,
     value: null,
     observer (newVal, oldVal) {
-      initComponent.apply(this, [ComponentClass, isPage])
+      // 头条基础库1.38.2后，太早 setData $taroCompReady 为 true 时，setData 虽然成功，但 slot 会不显示。
+      // 因此不在 observer 里 initComponent，在组件 attached 时 initComponent 吧。
+      // initComponent.apply(this, [ComponentClass, isPage])
       if (oldVal && oldVal !== newVal) {
         const { extraProps } = this.data
         const component = this.$component
@@ -33,7 +35,7 @@ function bindProperties (weappComponentConf, ComponentClass, isPage) {
           ComponentClass: component.constructor
         }
         const nextProps = filterProps(component.constructor.defaultProps, propsManager.map[newVal], component.props, extraProps || null)
-        this.$component.nextProps = nextProps
+        this.$component.props = nextProps
         nextTick(() => {
           this.$component._unsafeCallUpdate = true
           updateComponent(this.$component)
@@ -185,6 +187,7 @@ export function componentTrigger (component, key, args) {
   if (key === 'componentDidMount') {
     if (component['$$hasLoopRef']) {
       Current.current = component
+      Current.index = 0
       component._disableEffect = true
       component._createData(component.state, component.props, true)
       component._disableEffect = false
@@ -370,13 +373,13 @@ function createComponent (ComponentClass, isPage) {
       if (componentInstance[fn] && typeof componentInstance[fn] === 'function') {
         weappComponentConf[fn] = function () {
           const component = this.$component
-          if (component[fn] && typeof component[fn] === 'function') {
+          if (component && component[fn] && typeof component[fn] === 'function') {
             return component[fn](...arguments)
           }
         }
       }
     })
-    globPageRegistPath && cacheDataSet(globPageRegistPath, ComponentClass)
+    ComponentClass.$$componentPath && cacheDataSet(ComponentClass.$$componentPath, ComponentClass)
   }
   bindProperties(weappComponentConf, ComponentClass, isPage)
   bindBehaviors(weappComponentConf, ComponentClass)

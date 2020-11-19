@@ -31,7 +31,8 @@ import {
   NODE_MODULES_REG,
   taroJsRedux,
   taroJsMobxCommon,
-  taroJsMobx
+  taroJsMobx,
+  GLOBAL_PROPS
 } from './constants'
 
 import defaultUglifyConfig from '../config/uglify'
@@ -422,7 +423,7 @@ async function recursiveRequire ({
   const npmExclude = (compileConfig.exclude || []).filter(item => /(?:\/|^)node_modules(\/|$)/.test(item))
   let isNpmInCompileExclude = false
   for (const item of npmExclude) {
-    isNpmInCompileExclude = filePath.indexOf(item) !== -1
+    isNpmInCompileExclude = filePath.replace(/\\/g, '/').indexOf(item) !== -1
     if (isNpmInCompileExclude) {
       break
     }
@@ -509,22 +510,26 @@ async function recursiveRequire ({
 }
 
 export function npmCodeHack (filePath: string, content: string, buildAdapter: BUILD_TYPES): string {
+  // 修正core-js目录 _global.js
+  // 修正所有用到过lodash的第三方包
+  // 注：@tarojs/taro-alipay/dist/index.js,@tarojs/taro/dist/index.esm.js里面也有lodash相关的代码
+  content = content && content.replace(/(\|\||:)\s*Function\(['"]return this['"]\)\(\)/g, function (match, first, second) {
+    return `${first} ${GLOBAL_PROPS}`
+  })
+
   const basename = path.basename(filePath)
   switch (basename) {
-    case 'lodash.js':
-    case '_global.js':
-    case 'lodash.min.js':
-      if (buildAdapter === BUILD_TYPES.ALIPAY || buildAdapter === BUILD_TYPES.SWAN || buildAdapter === BUILD_TYPES.JD) {
-        content = content.replace(/Function\(['"]return this['"]\)\(\)/, '{}')
-      } else {
-        content = content.replace(/Function\(['"]return this['"]\)\(\)/, 'this')
-      }
-      break
     case 'mobx.js':
-      // 解决支付宝小程序全局window或global不存在的问题
+      // 解决支付宝和快应用 global 问题
+      let globalContent
+      if (process.env.TARO_ENV === 'quickapp') {
+        globalContent = 'global.__proto__'
+      } else {
+        globalContent = 'typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : {}'
+      }
       content = content.replace(
         /typeof window\s{0,}!==\s{0,}['"]undefined['"]\s{0,}\?\s{0,}window\s{0,}:\s{0,}global/,
-        'typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : {}'
+        globalContent
       )
       break
     case '_html.js':
@@ -534,9 +539,6 @@ export function npmCodeHack (filePath: string, content: string, buildAdapter: BU
       content = content.replace('if(Observer)', 'if(false && Observer)')
       // IOS 1.10.2 Promise BUG
       content = content.replace('Promise && Promise.resolve', 'false && Promise && Promise.resolve')
-      break
-    case '_freeGlobal.js':
-      content = content.replace('module.exports = freeGlobal;', 'module.exports = freeGlobal || this || global || {};')
       break
   }
   if (buildAdapter === BUILD_TYPES.ALIPAY && content.replace(/\s\r\n/g, '').length <= 0) {

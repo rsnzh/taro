@@ -18,6 +18,7 @@ $ yarn global add @tarojs/cli
 # OR 安装了 cnpm，使用 cnpm 安装 CLI
 $ cnpm install -g @tarojs/cli
 ```
+
 ### 注意事项
 
 值得一提的是，如果安装过程出现`sass`相关的安装错误，请在安装[`mirror-config-china`](https://www.npmjs.com/package/mirror-config-china)后重试。
@@ -53,20 +54,19 @@ $ cnpm install
 $ npm install
 ```
 
-进入项目目录开始开发，目前已经支持 微信/百度/支付宝/字节跳动/QQ 小程序、H5、快应用以及 ReactNative 等端的代码转换，针对不同端的启动以及预览、打包方式并不一致
+进入项目目录开始开发，目前已经支持 微信/百度/支付宝/字节跳动/QQ/京东小程序、H5、快应用以及 ReactNative 等端的代码转换，针对不同端的启动以及预览、打包方式并不一致
 
 ## 运行
+
 Taro 需要运行不同的命令，将 Taro 代码编译成不同端的代码，然后在对应的开发工具中查看效果。
 
 ![image](https://storage.360buyimg.com/taro-resource/platforms.jpg)
-
 
 ### 保持 `@tarojs/cli` 的版本与各端依赖版本一致
 
 在使用 Taro 进行多端开发中，请确保 Taro CLI 的版本与你项目的依赖版本一致，否则可能会出现编译错误或者运行时错误。
 
 如果你所使用的 Taro CLI 版本为 1.3.9，而项目里使用的依赖版本为 1.3.20，则有可能会出现问题，查询方法请参见本章 "环境及依赖检测" 章节，这时请将你的 Taro CLI 版本更新至项目依赖版本号相同的版本，如果还是出现问题，请向我们提出 [Issue](https://github.com/NervJS/taro/issues/new?assignees=&labels=&template=bug_report.md&title=)。
-
 
 ### 微信小程序
 
@@ -85,8 +85,8 @@ $ npm run build:weapp
 $ taro build --type weapp --watch
 $ taro build --type weapp
 # npx 用户也可以使用
-$ npx taro build --type weapp --watch
-$ npx taro build --type weapp
+$ npx @tarojs/cli build --type weapp --watch
+$ npx @tarojs/cli build --type weapp
 ```
 
 ### 百度小程序
@@ -106,8 +106,8 @@ $ npm run build:swan
 $ taro build --type swan --watch
 $ taro build --type swan
 # npx 用户也可以使用
-$ npx taro build --type swan --watch
-$ npx taro build --type swan
+$ npx @tarojs/cli build --type swan --watch
+$ npx @tarojs/cli build --type swan
 ```
 
 ### 支付宝小程序
@@ -127,8 +127,8 @@ $ npm run build:alipay
 $ taro build --type alipay --watch
 $ taro build --type alipay
 # npx 用户也可以使用
-$ npx taro build --type alipay --watch
-$ npx taro build --type alipay
+$ npx @tarojs/cli build --type alipay --watch
+$ npx @tarojs/cli build --type alipay
 ```
 
 ### 字节跳动小程序
@@ -148,8 +148,8 @@ $ npm run build:tt
 $ taro build --type tt --watch
 $ taro build --type tt
 # npx 用户也可以使用
-$ npx taro build --type tt --watch
-$ npx taro build --type tt
+$ npx @tarojs/cli build --type tt --watch
+$ npx @tarojs/cli build --type tt
 ```
 
 ### QQ 小程序
@@ -169,8 +169,29 @@ $ npm run build:qq
 $ taro build --type qq --watch
 $ taro build --type qq
 # npx 用户也可以使用
-$ npx taro build --type qq --watch
-$ npx taro build --type qq
+$ npx @tarojs/cli build --type qq --watch
+$ npx @tarojs/cli build --type qq
+```
+
+### 京东小程序
+
+选择京东小程序模式，需要自行下载并打开京东小程序开发者工具（可邮件联系 **mp@jd.com** 获取内测版本），然后在项目编译完后选择项目根目录下 `dist` 目录进行预览。
+
+京东小程序编译预览及打包（去掉 --watch 将不会监听文件修改，并会对代码进行压缩打包）
+
+```bash
+# yarn
+$ yarn dev:jd
+$ yarn build:jd
+# npm script
+$ npm run dev:jd
+$ npm run build:jd
+# 仅限全局安装
+$ taro build --type jd --watch
+$ taro build --type jd
+# npx 用户也可以使用
+$ npx @tarojs/cli build --type jd --watch
+$ npx @tarojs/cli build --type jd
 ```
 
 ### 快应用
@@ -190,8 +211,8 @@ $ npm run build:quickapp
 $ taro build --type quickapp --watch
 $ taro build --type quickapp
 # npx 用户也可以使用
-$ npx taro build --type quickapp --watch
-$ npx taro build --type quickapp
+$ npx @tarojs/cli build --type quickapp --watch
+$ npx @tarojs/cli build --type quickapp
 ```
 
 [快应用开发者工具如何使用？点击了解](https://doc.quickapp.cn/tutorial/ide/overview.html)
@@ -212,7 +233,7 @@ $ npm run dev:h5
 # 仅限全局安装
 $ taro build --type h5 --watch
 # npx 用户也可以使用
-$ npx taro build --type h5 --watch
+$ npx @tarojs/cli build --type h5 --watch
 ```
 
 H5 打包项目
@@ -225,7 +246,7 @@ $ npm run build:h5
 # 仅限全局安装
 $ taro build --type h5
 # npx 用户也可以使用
-$ npx taro build --type h5
+$ npx @tarojs/cli build --type h5
 ```
 
 ### React Native
@@ -240,7 +261,7 @@ $ npm run dev:rn
 # 仅限全局安装
 $ taro build --type rn --watch
 # npx 用户也可以使用
-$ npx taro build --type rn --watch
+$ npx @tarojs/cli build --type rn --watch
 ```
 
 > Note：React Native 端和其他端样式兼容性差异较大，如果需要兼容 React Native 端，建议 React Native 端和其他端同步开发。
@@ -296,18 +317,21 @@ Taro 提供了更新命令来更新 CLI 工具自身和项目中 Taro 相关的�
 
 ```bash
 # taro
-$ taro update self
+$ taro update self [version]
 # npm
-npm i -g @tarojs/cli@latest
+npm i -g @tarojs/cli@[version]
 # yarn
-yarn global add @tarojs/cli@latest
+yarn global add @tarojs/cli@[version]
 ```
 
 更新项目中 Taro 相关的依赖
 
 ```bash
-$ taro update project
+$ taro update project [version]
 ```
+
+> `version` 为选填，如：`1.x.x/latest` 等，将会直接更新到指定版本。
+> 若不填写 `version`，将会更新到当前项目 Taro 依赖的 `主版本（major）`的最新稳定版，如当前主版本没有稳定版本，则会更新到 `latest` 指定的版本。
 
 如命令更新失败，需要在 package.json 文件手动更新依赖版本，然后重新安装依赖。
 
@@ -356,7 +380,7 @@ Taro Doctor 就像一个医生一样，可以诊断项目的依赖、设置、�
 
 ### 快速创建新页面
 
-Taro create --name [页面名称] 能够在当前项目的pages目录下快速生成新的页面文件，并填充基础代码，是一个提高开发效率的利器。
+Taro create --name [页面名称] 能够在当前项目的 pages 目录下快速生成新的页面文件，并填充基础代码，是一个提高开发效率的利器。
 
 ### CLI 配置
 

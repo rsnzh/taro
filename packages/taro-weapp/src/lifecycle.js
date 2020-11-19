@@ -3,11 +3,12 @@ import {
   internal_safe_set as safeSet,
   commitAttachRef,
   Current,
-  invokeEffects
+  invokeEffects,
+  getIsUsingDiff
 } from '@tarojs/taro'
 import PropTypes from 'prop-types'
 import { componentTrigger } from './create-component'
-import { shakeFnFromObject, isEmptyObject, diffObjToPath, isFunction, isUndefined, isArray } from './util'
+import { cloneDeep, isEmptyObject, diffObjToPath, isFunction, isUndefined, isArray } from './util'
 import { enqueueRender } from './render-queue'
 
 const isDEV = typeof process === 'undefined' ||
@@ -44,10 +45,6 @@ function callGetSnapshotBeforeUpdate (component, props, state) {
 
 export function updateComponent (component) {
   const { props, __propTypes } = component
-  // 由 forceUpdate 或者组件自身 setState 发起的 update 可能是没有新的nextProps的
-  const nextProps = component.nextProps || props
-  const prevProps = props
-
   if (isDEV && __propTypes) {
     let componentName = component.constructor.name
     if (isUndefined(componentName)) {
@@ -56,17 +53,18 @@ export function updateComponent (component) {
     }
     PropTypes.checkPropTypes(__propTypes, props, 'prop', componentName)
   }
-
+  const prevProps = component.prevProps || props
+  component.props = prevProps
   if (component.__mounted && component._unsafeCallUpdate === true && !hasNewLifecycle(component) && component.componentWillReceiveProps) {
     component._disable = true
-    component.componentWillReceiveProps(nextProps)
+    component.componentWillReceiveProps(props)
     component._disable = false
   }
   let state = component.getState()
 
   const prevState = component.prevState || state
 
-  const stateFromProps = callGetDerivedStateFromProps(component, nextProps, state)
+  const stateFromProps = callGetDerivedStateFromProps(component, props, state)
 
   if (!isUndefined(stateFromProps)) {
     state = stateFromProps
@@ -76,21 +74,21 @@ export function updateComponent (component) {
   if (component.__mounted) {
     if (typeof component.shouldComponentUpdate === 'function' &&
       !component._isForceUpdate &&
-      component.shouldComponentUpdate(nextProps, state) === false) {
+      component.shouldComponentUpdate(props, state) === false) {
       skip = true
     } else if (!hasNewLifecycle(component) && isFunction(component.componentWillUpdate)) {
-      component.componentWillUpdate(nextProps, state)
+      component.componentWillUpdate(props, state)
     }
   }
 
-  component.props = nextProps
+  component.props = props
   component.state = state
   component._dirty = false
   component._isForceUpdate = false
   if (!skip) {
     doUpdate(component, prevProps, prevState)
   }
-  delete component.nextProps
+  component.prevProps = component.props
   component.prevState = component.state
 }
 
@@ -117,6 +115,7 @@ export function mountComponent (component) {
     }
   }
   doUpdate(component, props, component.state)
+  component.prevProps = component.props
   component.prevState = component.state
 }
 
@@ -164,7 +163,8 @@ function doUpdate (component, prevProps, prevState) {
       if (typeof val === 'object') {
         if (isEmptyObject(val)) return safeSet(_data, key, {})
 
-        // 避免筛选完 Fn 后产生了空对象还去渲染
+        val = cloneDeep(val)
+
         if (!isEmptyObject(val)) safeSet(_data, key, val)
       } else {
         safeSet(_data, key, val)
@@ -174,7 +174,7 @@ function doUpdate (component, prevProps, prevState) {
   }
   data['$taroCompReady'] = true
 
-  const dataDiff = diffObjToPath(data, component.$scope.data)
+  const dataDiff = getIsUsingDiff() ? diffObjToPath(data, component.$scope.data) : data
   const __mounted = component.__mounted
   let snapshot
   if (__mounted) {
@@ -209,6 +209,7 @@ function doUpdate (component, prevProps, prevState) {
 
       if (component['$$hasLoopRef']) {
         Current.current = component
+        Current.index = 0
         component._disableEffect = true
         component._createData(component.state, component.props, true)
         component._disableEffect = false

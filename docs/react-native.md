@@ -14,9 +14,10 @@ Taro 移动端的开发基于 Facebook 的开源项目 [React Native](https://gi
 
 ![image](http://assets.processon.com/chart_image/5c988481e4b01e76978bd6ab.png)
 
-首先在 Taro 项目里执行：`taro build --type rn --watch`，这个命令会将 Taro 代码编译为 React Native 代码（默认输出在 rn_temp 目录下），并启动 Metro Server（可以看成是 webpack run devserver --port 8081）打包 rn_temp 下的 js。
+> 没有 React Native 开发经验的同学，可以将启动后的 `taro-native-shell`看成是浏览器；将 `taro build --type rn --watch` 启动的 Metro Server 看成是 `webpack-dev-server`，“浏览器” 从 8081 端口获取编译后的 js ，然后渲染出来。
 
-然后进入 `taro-native-shell` 目录（建议和 Taro 项目平级），通过 `react-native run-android|ios`启动，或者通过对应的 Android Studio / Xcode 启动应用，启动后应用可以看成是一个浏览器，会从 8081 端口加载 js 并渲染。
+1. 在 Taro 项目里执行：`taro build --type rn --watch`，这个命令会将 Taro 代码编译为 React Native 代码（默认输出在 rn_temp 目录下），并启动 Metro Server（可以看成是 webpack run devserver --port 8081）打包 rn_temp 下的 js。
+2. 进入 `taro-native-shell` 目录（建议和 Taro 项目平级），建议通过对应的 Android Studio / Xcode 启动应用，启动后应用可以看成是一个浏览器，会从 8081 端口加载 js 并渲染。
 
 ## 搭建 iOS 开发环境
 
@@ -368,7 +369,7 @@ iOS 的启动比较简单，使用 Xcode 打开 ios 目录，然后点击 Run �
 @end
 ```
 
-app.json 字段的配置默认取自于 package.json 的 name 字段，除非你在 rn -> appJson 里面有配置。
+app.json 字段的配置默认取自于 package.json 的 name 字段，除非你在 `rn -> appJson` 里面有配置。
 
 更多资料，可以查看 Xcode 文档：[Building Your App](https://developer.apple.com/library/archive/documentation/ToolsLanguages/Conceptual/Xcode_Overview/BuildingYourApp.html)
 
@@ -386,7 +387,6 @@ Android 模拟器会自行启动，并访问 8081 端口获取 js bundle，这�
 ```sh
  BUNDLE  [android, dev] ./index.js ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ 100.0% (1/1), done.
 ```
-
 
 #### 在真实设备上运行
 
@@ -415,7 +415,7 @@ Android 模拟器会自行启动，并访问 8081 端口获取 js bundle，这�
 
 Android Studio 会在您连接的设备上安装并启动应用。
 
-### 在模拟器上运行
+#### 在模拟器上运行
 按照以下步骤操作，在模拟器上运行应用：
 
 1. 在 Android Studio 中，点击 Project 窗口中的 app 模块，然后选择 Run > Run（或点击工具栏中的 Run  ）。
@@ -430,6 +430,10 @@ Android Studio 会在您连接的设备上安装并启动应用。
 7. 返回到 Select Deployment Target 对话框中，选择您刚刚创建的设备，然后点击 OK。
 
 Android Studio 会在模拟器上安装并启动应用。
+
+#### 在真机上运行
+
+参考 [在设备上运行](https://reactnative.cn/docs/running-on-device/)
 
 #### Module Name
 

@@ -1,8 +1,9 @@
 import { getCurrentPageUrl } from '@tarojs/utils'
 import { commitAttachRef, detachAllRef, Current, eventCenter } from '@tarojs/taro'
 import { isEmptyObject, isFunction, isArray } from './util'
-import { mountComponent } from './lifecycle'
+import { mountComponent, updateComponent } from './lifecycle'
 import { cacheDataSet, cacheDataGet, cacheDataHas } from './data-cache'
+import nextTick from './next-tick'
 import propsManager from './propsManager'
 
 const anonymousFnNamePreffix = 'funPrivate'
@@ -46,7 +47,7 @@ function bindProperties (weappComponentConf, ComponentClass, isPage) {
           ComponentClass: component.constructor
         }
         const nextProps = filterProps(component.constructor.defaultProps, propsManager.map[newVal], component.props, extraProps || null)
-        this.$component.nextProps = nextProps
+        this.$component.props = nextProps
         nextTick(() => {
           this.$component._unsafeCallUpdate = true
           updateComponent(this.$component)
@@ -230,6 +231,7 @@ export function componentTrigger (component, key, args) {
     }
     if (component['$$hasLoopRef']) {
       Current.current = component
+      Current.index = 0
       component._disableEffect = true
       component._createData(component.state, component.props, true)
       component._disableEffect = false
@@ -388,7 +390,7 @@ function createComponent (ComponentClass, isPage) {
       if (componentInstance[fn] && typeof componentInstance[fn] === 'function') {
         weappComponentConf.methods[fn] = function () {
           const component = this.$component
-          if (component[fn] && typeof component[fn] === 'function') {
+          if (component && component[fn] && typeof component[fn] === 'function') {
             return component[fn].call(component, ...arguments)
           }
         }

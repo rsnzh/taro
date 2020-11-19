@@ -1,4 +1,4 @@
-import { inlineStyle, setTransform } from '../utils'
+import { inlineStyle, setTransform, interactiveHelper } from '../utils'
 
 const noop = function () {}
 export default class ActionSheet {
@@ -12,13 +12,13 @@ export default class ActionSheet {
 
   style = {
     maskStyle: {
-        'position': 'fixed',
-        'z-index': '1000',
-        'top': '0',
-        'right': '0',
-        'left': '0',
-        'bottom': '0',
-        'background': 'rgba(0,0,0,0.6)'
+      'position': 'fixed',
+      'z-index': '1000',
+      'top': '0',
+      'right': '0',
+      'left': '0',
+      'bottom': '0',
+      'background': 'rgba(0,0,0,0.6)'
     },
     actionSheetStyle: {
       'z-index': '4999',
@@ -74,14 +74,17 @@ export default class ActionSheet {
 
     // mask
     const mask = document.createElement('div')
+    mask.className = 'taro-actionsheet__mask'
     mask.setAttribute('style', inlineStyle(maskStyle))
 
     // actionSheet
     this.actionSheet = document.createElement('div')
+    this.actionSheet.className = 'taro-actionsheet__content'
     this.actionSheet.setAttribute('style', inlineStyle(actionSheetStyle))
 
     // menu
     this.menu = document.createElement('div')
+    this.menu.className = 'taro-actionsheet__menu'
     this.menu.setAttribute('style', inlineStyle({
       ...menuStyle,
       color: config.itemColor
@@ -100,6 +103,7 @@ export default class ActionSheet {
 
     // cancel
     this.cancel = document.createElement('div')
+    this.cancel.className = 'taro-actionsheet__btn taro-actionsheet__cancel'
     this.cancel.setAttribute('style', inlineStyle(cancelStyle))
     this.cancel.textContent = '取消'
 
@@ -123,6 +127,8 @@ export default class ActionSheet {
 
     // show immediately
     document.body.appendChild(this.el)
+    // set body position fixed style
+    interactiveHelper().handleAfterCreate()
     setTimeout(() => {
       this.el.style.opacity = '1'
       setTransform(this.actionSheet, 'translate(0, 0)')
@@ -139,7 +145,7 @@ export default class ActionSheet {
       ...this.options,
       ...options
     }
-    
+
     this.lastConfig = config
 
     if (this.hideOpacityTimer) clearTimeout(this.hideOpacityTimer)
@@ -179,6 +185,8 @@ export default class ActionSheet {
 
     // show
     this.el.style.display = 'block'
+    // set body position fixed style
+    interactiveHelper().handleAfterCreate()
     setTimeout(() => {
       this.el.style.opacity = '1'
       setTransform(this.actionSheet, 'translate(0, 0)')
@@ -208,6 +216,8 @@ export default class ActionSheet {
 
     this.hideOpacityTimer = setTimeout(() => {
       this.el.style.opacity = '0'
+      // reset body style as default
+      interactiveHelper().handleBeforeDestroy()
       setTransform(this.actionSheet, 'translate(0, 100%)')
       this.hideDisplayTimer = setTimeout(() => { this.el.style.display = 'none' }, 200)
     }, 0)

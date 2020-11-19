@@ -13,7 +13,7 @@ import {
   setTemplate,
   isContainFunction,
   buildConstVariableDeclaration,
-  incrementId,
+  getScopeUid,
   isArrayMapCallExpression,
   generateAnonymousState,
   hasComplexExpression,
@@ -25,12 +25,11 @@ import {
   getSuperClassCode,
   isContainStopPropagation,
   noop,
-  genCompid,
   findParentLoops,
   setAncestorCondition,
   replaceJSXTextWithTextComponent,
-  createRandomLetters,
-  isDerivedFromProps
+  isDerivedFromProps,
+  createUniPathID
 } from './utils'
 import { difference, get as safeGet, cloneDeep, uniq, snakeCase } from 'lodash'
 import {
@@ -44,12 +43,13 @@ import {
   MAP_CALL_ITERATOR,
   LOOP_STATE,
   LOOP_CALLEE,
+  LOOP_ARRAY,
   PREV_COMPID,
   COMPID,
   THIRD_PARTY_COMPONENTS,
   LOOP_ORIGINAL,
   INTERNAL_GET_ORIGNAL,
-  GEL_ELEMENT_BY_ID,
+  HANDLE_LOOP_REF,
   PROPS_MANAGER,
   GEN_COMP_ID,
   ALIPAY_BUBBLE_EVENTS,
@@ -111,9 +111,6 @@ function buildAssignState (
   )
 }
 
-const incrementCalleeId = incrementId()
-const incrementLoopArrayId = incrementId()
-
 export class RenderParser {
   public outputTemplate: string
 
@@ -132,8 +129,8 @@ export class RenderParser {
   private customComponentNames: Set<string>
   private loopCalleeId = new Set<t.Identifier>()
   private usedThisProperties = new Set<string>()
-  private incrementCalleeId = isTestEnv ? incrementId() : incrementCalleeId
-  private loopArrayId = isTestEnv ? incrementId() : incrementLoopArrayId
+  private incrementCalleeId = (path: NodePath<t.JSXElement>) => `${LOOP_CALLEE}_${getScopeUid(path.scope, LOOP_CALLEE)}`
+  private loopArrayId = (path: NodePath<t.JSXElement>) => `${LOOP_ARRAY}_${getScopeUid(path.scope, LOOP_ARRAY)}`
   private classComputedState = new Set<string>()
   private propsSettingExpressions = new Map<t.BlockStatement, (() => t.ExpressionStatement)[]>()
   private genCompidExprs = new Set<t.VariableDeclaration>()
@@ -495,7 +492,7 @@ export class RenderParser {
                   let ary = callee.object
                   if (t.isCallExpression(ary) || isContainFunction(callExpr.get('callee').get('object'))) {
                     this.loopCallees.add(ary)
-                    const variableName = `${LOOP_CALLEE}_${this.incrementCalleeId()}`
+                    const variableName = this.incrementCalleeId(jsxElementPath)
                     callExpr.getStatementParent().insertBefore(
                       buildConstVariableDeclaration(variableName, setParentCondition(jsxElementPath, ary, true))
                     )
@@ -569,7 +566,7 @@ export class RenderParser {
                         setJSXAttr(
                           needWrapper ? block : jsxElementPath.node,
                           Adapter.forIndex,
-                          t.stringLiteral(this.renderScope.generateUid('anonIdx'))
+                          t.stringLiteral(uid)
                         )
                       }
                     } else {
@@ -594,9 +591,9 @@ export class RenderParser {
                     let loopComponentName
                     const parentCallee = callExpr.findParent(c => isArrayMapCallExpression(c))
                     if (isArrayMapCallExpression(parentCallee)) {
-                      loopComponentName = `${LOOP_CALLEE}_${this.incrementCalleeId()}`
+                      loopComponentName = this.incrementCalleeId(jsxElementPath)
                     } else {
-                      loopComponentName = 'loopArray' + this.loopArrayId()
+                      loopComponentName = this.loopArrayId(jsxElementPath)
                     }
                     this.loopComponentNames.set(callExpr, loopComponentName)
                     // caller.replaceWith(jsxElementPath.node)
@@ -632,7 +629,7 @@ export class RenderParser {
           return
         }
         if (t.isIdentifier(id)) {
-          if (id.name.startsWith('loopArray') || id.name.startsWith(LOOP_CALLEE)) {
+          if (id.name.startsWith(LOOP_ARRAY) || id.name.startsWith(LOOP_CALLEE)) {
             this.renderPath.node.body.body.unshift(
               t.variableDeclaration('let', [t.variableDeclarator(t.identifier(id.name))])
             )
@@ -686,7 +683,7 @@ export class RenderParser {
 
         const blockAttrs: t.JSXAttribute[] = []
         if ((isNewPropsSystem()) && !this.finalReturnElement && process.env.NODE_ENV !== 'test') {
-          if (this.isDefaultRender) {
+          if (this.isDefaultRender && Adapter.type !== Adapters.swan) {
             blockAttrs.push(t.jSXAttribute(
               t.jSXIdentifier(Adapter.if),
               t.jSXExpressionContainer(t.jSXIdentifier(IS_TARO_READY))
@@ -991,6 +988,7 @@ export class RenderParser {
     const properties: Array<t.ObjectProperty | t.SpreadProperty> = []
     openingElement.attributes = attrs.filter(attr => {
       if (t.isJSXSpreadAttribute(attr)) {
+        // @ts-ignore
         properties.push(t.spreadProperty(attr.argument))
         return false
       } else if (t.isJSXAttribute(attr)) {
@@ -1041,10 +1039,10 @@ export class RenderParser {
       return
     }
     if (this.isInternalComponent(openingElement)) {
-      if (this.isEmptyProps(openingElement.attributes)) {
+      if (this.isEmptyProps(openingElement.attributes) && Adapter.type !== Adapters.swan) {
         return
       }
-      const compId = genCompid()
+      const compId = getScopeUid(jsxElementPath.scope, 'compId')
       const prevName = `${PREV_COMPID}__${compId}`
       const name = `${COMPID}__${compId}`
       const variableName = t.identifier(name)
@@ -1221,7 +1219,7 @@ export class RenderParser {
             return false
           }) as NodePath<t.JSXElement>
           if (loopBlock) {
-            setJSXAttr(loopBlock.node, Adapter.key, value)
+            setJSXAttr(loopBlock.node, Adapter.key, value!)
             path.remove()
           } else {
             path.get('name').replaceWith(t.jSXIdentifier(Adapter.key))
@@ -1411,7 +1409,7 @@ export class RenderParser {
         }
         const code = generate(path.node).code
         if (code.includes('this.$router.params') && t.isIdentifier(property)) {
-          const name = this.renderScope.generateUid(property.name)
+          const name = this.renderScope.generateUid(property.name || 'render')
           const dcl = buildConstVariableDeclaration(name, path.node)
           this.renderPath.node.body.body.unshift(dcl)
           path.replaceWith(t.identifier(name))
@@ -1511,12 +1509,15 @@ export class RenderParser {
           const { properties } = id.node
           for (const p of properties) {
             if (t.isIdentifier(p)) {
+              // @ts-ignore
               if (this.initState.has(p.name)) {
                 // tslint:disable-next-line
                 console.log(codeFrameError(id.node, errMsg).message)
               }
             }
+            // @ts-ignore
             if (t.isSpreadProperty(p) && t.isIdentifier(p.argument)) {
+              // @ts-ignore
               if (this.initState.has(p.argument.name)) {
                 // tslint:disable-next-line
                 console.log(codeFrameError(id.node, errMsg).message)
@@ -1799,38 +1800,27 @@ export class RenderParser {
           throw codeFrameError(component.node, '在循环中使用 ref 必须暴露循环的第二个参数 `index`')
         }
         const id = typeof ref.id === 'string' ? t.binaryExpression('+', t.stringLiteral(ref.id), indexId) : ref.id
-        const refDeclName = '__ref'
         const args: any[] = [
           t.identifier('__scope'),
           t.binaryExpression('+', t.stringLiteral('#'), id)
         ]
         if (ref.type === 'component') {
           args.push(t.stringLiteral('component'))
-        }
-        const callGetElementById = t.callExpression(t.identifier(GEL_ELEMENT_BY_ID), args)
-        const refDecl = buildConstVariableDeclaration(refDeclName,
-          isTestEnv ? callGetElementById : t.logicalExpression('&&', t.identifier('__scope'), t.logicalExpression('&&', t.identifier('__isRunloopRef'), callGetElementById))
-        )
-        const callRef = t.callExpression(ref.fn, [t.identifier(refDeclName)])
-        const callRefFunc = t.expressionStatement(
-          isTestEnv ? callRef : t.logicalExpression('&&', t.identifier(refDeclName), callRef)
-        )
-        if (Adapter.type === Adapters.tt) {
-          body.push(
-            t.expressionStatement(
-              t.logicalExpression(
-                '&&',
-                t.logicalExpression('&&', t.identifier('__scope'), t.identifier('__isRunloopRef')),
-                t.callExpression(
-                  t.memberExpression(t.identifier('Taro'), t.identifier('handleLoopRef')),
-                  args.length === 2 ? [...args, t.nullLiteral(), ref.fn] : [...args, ref.fn]
-                )
-              )
-            )
-          )
         } else {
-          body.push(refDecl, callRefFunc)
+          args.push(t.stringLiteral('dom'))
         }
+        args.push(ref.fn)
+        const callHandleLoopRef = t.callExpression(t.identifier(HANDLE_LOOP_REF), args)
+
+        const loopRefStatement = t.expressionStatement(
+          t.logicalExpression(
+            '&&',
+            t.logicalExpression('&&', t.identifier('__scope'), t.identifier('__isRunloopRef')),
+            callHandleLoopRef
+          )
+        )
+
+        body.splice(body.length - 1, 0, !isTestEnv ? loopRefStatement : t.expressionStatement(callHandleLoopRef))
       }
 
       if (isNewPropsSystem()) {
@@ -1870,10 +1860,10 @@ export class RenderParser {
                 return
               }
 
-              // createData 函数里加入 compid 相关逻辑
-              const compid = genCompid()
-              const prevVariableName = `${PREV_COMPID}__${compid}`
-              const variableName = `${COMPID}__${compid}`
+              // createData 函数里加入 compId 相关逻辑
+              const compId = getScopeUid(path.scope, 'compId')
+              const prevVariableName = `${PREV_COMPID}__${compId}`
+              const variableName = `${COMPID}__${compId}`
               const tpmlExprs: t.Expression[] = []
               for (let index = 0; index < loopIndices.length; index++) {
                 const element = loopIndices[index]
@@ -1882,6 +1872,7 @@ export class RenderParser {
                   tpmlExprs.push(t.stringLiteral('-'))
                 }
               }
+              const renderPath = this.renderPath.getPathLocation()
               const compidTempDecl = t.variableDeclaration('const', [
                 t.variableDeclarator(
                   t.arrayPattern([t.identifier(prevVariableName), t.identifier(variableName)]),
@@ -1890,7 +1881,7 @@ export class RenderParser {
                     [t.templateLiteral(
                       [
                         t.templateElement({ raw: '' }),
-                        t.templateElement({ raw: createRandomLetters(10) }),
+                        t.templateElement({ raw: createUniPathID(renderPath.replace(renderPath, '')) }),
                         ...tpmlExprs.map(() => t.templateElement({ raw: '' }))
                       ],
                       [
@@ -1909,7 +1900,7 @@ export class RenderParser {
 
               body.splice(body.length - 1, 0, compidTempDecl, t.expressionStatement(expr))
 
-              // wxml 组件打上 compid
+              // wxml 组件打上 compId
               const [ func ] = callee.node.arguments
               let forItem: t.Identifier | null = null
               if (t.isFunctionExpression(func) || t.isArrowFunctionExpression(func)) {

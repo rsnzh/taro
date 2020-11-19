@@ -50,9 +50,8 @@ export function isDerivedFromThis (scope: Scope, bindingName: string) {
   return false
 }
 
-export const incrementId = () => {
-  let id = 0
-  return () => id++
+export const getScopeUid = (scope: NodePath['scope'], name = 'temp') => {
+  return Number(scope.generateUid(name).replace(name, '').replace(/^_+/, '')) || 1
 }
 
 // tslint:disable-next-line:no-empty
@@ -226,13 +225,13 @@ export function setParentCondition (jsx: NodePath<t.Node>, expr: t.Expression, a
   return expr
 }
 
+export const ANONYMOUS_STATE = 'anonymousState'
 export function generateAnonymousState (
   scope: Scope,
   expression: NodePath<t.Expression>,
   refIds: Set<t.Identifier>,
   isLogical?: boolean
 ) {
-  let variableName = `anonymousState_${scope.generateUid()}`
   let statementParent = expression.getStatementParent()
   if (!statementParent) {
     throw codeFrameError(expression.node.loc, '无法生成匿名 State，尝试先把值赋到一个变量上再把变量调换。')
@@ -242,7 +241,9 @@ export function generateAnonymousState (
   const ifExpr = jsx.findParent(p => p.isIfStatement())
   const blockStatement = jsx.findParent(p => p.isBlockStatement() && p.parentPath === ifExpr) as NodePath<t.BlockStatement>
   const expr = setParentCondition(jsx, cloneDeep(expression.node))
+  let variableName
   if (!callExpr) {
+    variableName = `${ANONYMOUS_STATE}__${getScopeUid(scope, ANONYMOUS_STATE)}`
     refIds.add(t.identifier(variableName))
     statementParent.insertBefore(
       buildConstVariableDeclaration(variableName, expr)
@@ -284,7 +285,7 @@ export function generateAnonymousState (
       })
     }
   } else {
-    variableName = `${LOOP_STATE}_${callExpr.scope.generateUid()}`
+    variableName = `${LOOP_STATE}__${getScopeUid(callExpr.scope, 'loop')}`
     const func = callExpr.node.arguments[0]
     if (t.isArrowFunctionExpression(func)) {
       if (!t.isBlockStatement(func.body)) {
@@ -427,6 +428,33 @@ export function createRandomLetters (n: number) {
     letters += 'z'
   }
   return letters
+}
+
+function hex2Str (e = 0) {
+  return e.toString(36).replace(/0*$/, '').toUpperCase()
+}
+
+const UNI_ID = new Map<string, number>()
+process.on('exit', () => {
+  UNI_ID.clear()
+})
+export function createUniID (name = 'temp') {
+  let i = UNI_ID.get(name)
+  i = typeof i === 'number' ? i + 1 : 0
+  UNI_ID.set(name, i)
+  const suffix = hex2Str(i)
+  return suffix ? `${name}_${suffix}` : name
+}
+
+export function createPathID (str: string) {
+  const hex = Buffer.from(str, 'base64').toString('hex')
+  return hex2Str(parseInt(hex, 16))
+}
+
+export function createUniPathID (name: string, str?: string) {
+  const prefix = typeof str === 'string' ? `${name}__` : ''
+  const s = createPathID(typeof str === 'string' ? str : name)
+  return prefix + createUniID(s)
 }
 
 export function isBlockIfStatement (ifStatement, blockStatement): ifStatement is NodePath<t.IfStatement> {
@@ -618,11 +646,6 @@ export function findIdentifierFromStatement (statement: t.Node) {
     }
   }
   return '__return'
-}
-
-let id: number = 0
-export function genCompid (): string {
-  return String(id++)
 }
 
 export function findParentLoops (

@@ -47,7 +47,7 @@ function bindProperties (weappComponentConf, ComponentClass, isPage) {
           ComponentClass: component.constructor
         }
         const nextProps = filterProps(component.constructor.defaultProps, propsManager.map[newVal], component.props, extraProps || null)
-        this.$component.nextProps = nextProps
+        this.$component.props = nextProps
         nextTick(() => {
           this.$component._unsafeCallUpdate = true
           updateComponent(this.$component)
@@ -253,6 +253,7 @@ export function componentTrigger (component, key, args) {
     }
     if (component['$$hasLoopRef']) {
       Current.current = component
+      Current.index = 0
       component._disableEffect = true
       component._createData(component.state, component.props, true)
       component._disableEffect = false
@@ -343,21 +344,16 @@ function createComponent (ComponentClass, isPage) {
       this.$component.__propTypes = ComponentClass.propTypes
       Object.assign(this.$component.$router.params, options)
 
-      if (isPage) {
-        initComponent.apply(this, [ComponentClass, isPage])
-      }
-    },
-    attached () {
       let hasParamsCache
       if (isPage) {
         // params
         let params = {}
-        hasParamsCache = cacheDataHas(this.data[routerParamsPrivateKey])
+        hasParamsCache = cacheDataHas(options[routerParamsPrivateKey])
         if (hasParamsCache) {
-          params = Object.assign({}, ComponentClass.defaultParams, cacheDataGet(this.data[routerParamsPrivateKey], true))
+          params = Object.assign({}, ComponentClass.defaultParams, cacheDataGet(options[routerParamsPrivateKey], true))
         } else {
           // 直接启动，非内部跳转
-          params = filterParams(this.data, ComponentClass.defaultParams)
+          params = filterParams(options, ComponentClass.defaultParams)
         }
         if (cacheDataHas(PRELOAD_DATA_KEY)) {
           const data = cacheDataGet(PRELOAD_DATA_KEY, true)
@@ -365,15 +361,17 @@ function createComponent (ComponentClass, isPage) {
         }
         Object.assign(this.$component.$router.params, params)
         // preload
-        if (cacheDataHas(this.data[preloadPrivateKey])) {
-          this.$component.$preloadData = cacheDataGet(this.data[preloadPrivateKey], true)
+        if (cacheDataHas(options[preloadPrivateKey])) {
+          this.$component.$preloadData = cacheDataGet(options[preloadPrivateKey], true)
         } else {
-          this.$component.$preloadData = null
+          this.$component.$preloadData = {}
         }
-      }
-      if (hasParamsCache || !isPage) {
+
         initComponent.apply(this, [ComponentClass, isPage])
       }
+    },
+    attached () {
+      initComponent.apply(this, [ComponentClass, isPage])
     },
     ready () {
       if (!this.$component.__mounted) {
@@ -409,7 +407,7 @@ function createComponent (ComponentClass, isPage) {
       if (componentInstance[fn] && typeof componentInstance[fn] === 'function') {
         weappComponentConf[fn] = function () {
           const component = this.$component
-          if (component[fn] && typeof component[fn] === 'function') {
+          if (component && component[fn] && typeof component[fn] === 'function') {
             // eslint-disable-next-line no-useless-call
             return component[fn].call(component, ...arguments)
           }

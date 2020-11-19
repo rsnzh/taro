@@ -11,7 +11,7 @@ const routerParamsPrivateKey = '__key_'
 const preloadPrivateKey = '__preload_'
 const PRELOAD_DATA_KEY = 'preload'
 const preloadInitedComponent = '$preloadComponent'
-const pageExtraFns = ['onPullDownRefresh', 'onReachBottom', 'onShareAppMessage', 'onPageScroll', 'onTabItemTap', 'onResize']
+const pageExtraFns = ['onPullDownRefresh', 'onReachBottom', 'onShareAppMessage', 'onPageScroll', 'onTabItemTap', 'onResize', 'onShareTimeline']
 
 function bindProperties (weappComponentConf, ComponentClass, isPage) {
   weappComponentConf.properties = {}
@@ -47,7 +47,7 @@ function bindProperties (weappComponentConf, ComponentClass, isPage) {
           ComponentClass: component.constructor
         }
         const nextProps = filterProps(component.constructor.defaultProps, propsManager.map[newVal], component.props, extraProps || null)
-        this.$component.nextProps = nextProps
+        this.$component.props = nextProps
         nextTick(() => {
           this.$component._unsafeCallUpdate = true
           updateComponent(this.$component)
@@ -64,7 +64,7 @@ function bindProperties (weappComponentConf, ComponentClass, isPage) {
       if (!this.$component || !this.$component.__isReady) return
 
       const nextProps = filterProps(ComponentClass.defaultProps, {}, this.$component.props, this.data.extraProps)
-      this.$component.nextProps = nextProps
+      this.$component.props = nextProps
       nextTick(() => {
         this.$component._unsafeCallUpdate = true
         updateComponent(this.$component)
@@ -252,6 +252,7 @@ export function componentTrigger (component, key, args) {
     }
     if (component['$$hasLoopRef']) {
       Current.current = component
+      Current.index = 0
       component._disableEffect = true
       component._createData(component.state, component.props, true)
       component._disableEffect = false
@@ -411,7 +412,7 @@ function createComponent (ComponentClass, isPage) {
       if (componentInstance[fn] && typeof componentInstance[fn] === 'function') {
         weappComponentConf.methods[fn] = function () {
           const component = this.$component
-          if (component[fn] && typeof component[fn] === 'function') {
+          if (component && component[fn] && typeof component[fn] === 'function') {
             // eslint-disable-next-line no-useless-call
             return component[fn].call(component, ...arguments)
           }
